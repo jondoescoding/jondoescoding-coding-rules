@@ -1,0 +1,202 @@
+---
+description: This rule is helpful when creating tasks in the tasks / task-log folder
+globs: ["tasks/**/*", "task-logs/**/*", ".cursor/task-logs/**/*"]
+alwaysApply: false
+---
+
+# Task Management System
+
+## Overview
+This rule defines the standard format and workflow for task generation, tracking, and management.
+
+**CRITICAL CONTEXT:** The person we are developing for has dementia and desperately needs to understand what is going on. All task documentation must be extremely clear, detailed, and provide complete context at every step. Use simple language, detailed explanations, and frequent status updates to ensure full comprehension.
+
+## Required Template Structure
+
+### 1. Main Goal Section
+```markdown
+## 🎯 MAIN GOAL (Read This First!)
+[Clear, simple explanation of what we want to accomplish]
+```
+
+### 2. Key Things to Remember Section (CRITICAL - Always Include This First!)
+```markdown
+## 🔑 KEY THINGS TO REMEMBER
+
+### ❌ DON'Ts (Things to Avoid)
+- **DON'T [specific action]** - [clear explanation of why not]
+- **DON'T [specific action]** - [clear explanation of why not]
+- **DON'T [specific action]** - [clear explanation of why not]
+
+### ✅ DOs (Things to Do)
+- **DO [specific action]** - [clear explanation of what to do]
+- **DO [specific action]** - [clear explanation of what to do]
+- **DO [specific action]** - [clear explanation of what to do]
+
+### 📝 Notes
+- **[Important concept]**: [detailed explanation]
+- **[Important concept]**: [detailed explanation]
+- **[Performance/Efficiency Notes]**: [specific metrics or improvements expected]
+```
+
+### 3. Visual Flow Diagram Section
+```markdown
+## 📊 Visual Flow Diagram
+
+```mermaid
+graph TD
+    A[Start Point] --> B[Next Step]
+    B --> C[Final Step]
+    
+    style A fill:#e1f5fe
+    style B fill:#fff3e0
+    style C fill:#f3e5f5
+```
+```
+
+### 4. Complete Task List Section
+```markdown
+## 📝 COMPLETE TASK LIST (Do These In Order!)
+
+### 🔧 [CATEGORY NAME] ([Description])
+
+#### ✅ Task 1: [Task Name] ([Order Description])
+- **📁 File to Edit**: `path/to/file`
+- **🎯 What to Find**: [What to look for]
+- **✏️ What to Do**: [Specific actions]
+- **📋 Specific [Items] to [Action]** (Copy this list):
+  ```
+  item1
+  item2
+  item3
+  ```
+- **💡 Remember**: [Key reminder about this task]
+```
+
+### 5. Testing Section
+```markdown
+### 🧪 TESTING (Make Sure Everything Works!)
+
+#### ✅ Task [Number]: Test [Category] ([Description])
+- **🎯 What to Test**:
+  1. [Test item 1]
+  2. [Test item 2]
+- **💡 How to Test**: [Testing instructions]
+```
+
+### 6. Important Reminders Section
+```markdown
+## 🚨 IMPORTANT REMINDERS
+
+### Before You Start:
+- [ ] [Checklist item]
+- [ ] [Checklist item]
+
+### While Working:
+- [ ] [Checklist item]
+- [ ] [Checklist item]
+
+### When You're Done:
+- [ ] [Checklist item]
+- [ ] [Checklist item]
+```
+
+### 7. Success Criteria Section
+```markdown
+## 🔍 WHAT SUCCESS LOOKS LIKE
+When you're finished, a user should be able to:
+1. [Success criterion 1]
+2. [Success criterion 2]
+3. [Success criterion 3]
+```
+
+### 8. Help Section
+```markdown
+## 📞 IF YOU GET STUCK
+- Ask the user for assistance
+- [Help instruction 2]
+- [Help instruction 3]
+- Remember: [Key reminder]
+```
+
+## Status Indicators
+- ✅ **COMPLETED** - Task fully finished
+- ✅ **COMPLETED SUCCESSFULLY** - Task finished with great results
+- ⚡ **STARTING NOW** - Task currently being worked on
+- 🔄 **IN PROGRESS** - Task ongoing
+- ❌ **BLOCKED** - Task waiting for dependencies
+- 📋 **NOT STARTED** - Task not yet begun
+
+## Task Management Rules
+
+### When Creating New Tasks:
+1. **Always include** dependencies and clear success criteria explained in simple terms
+2. **Break down large tasks** into small, understandable subtasks with checkboxes
+3. **Use consistent numbering** (Phase.Section format like 1.1, 1.2, 2.1)
+4. **Add "WHAT THIS MEANS" section** to explain the purpose and impact in simple language
+5. **Add implementation details section** written in clear, non-technical language when possible
+6. **Reference related files** using proper mdc format when relevant
+
+### When Updating Tasks:
+1. **Update status indicators** with appropriate emojis and clear explanations
+2. **Add implementation details** with findings and results in simple, understandable language
+3. **Update dependencies** when tasks are completed with explanations of what this unlocks
+4. **Add "READY FOR" statements** with clear explanations of next steps and why they matter
+5. **Always explain the impact** of completing this task in terms anyone can understand
+
+### Status Update Format:
+```markdown
+**FINAL EXECUTION RESULTS:**
+1. **Completion:** ✅ 100% - All X items processed
+2. **Success Rate:** X/Y completed successfully (Z% success rate)
+3. **Quality:** Quality assessment in simple terms
+4. **What This Achieved:** Clear explanation of what we accomplished and why it matters
+5. **Impact:** Business/technical impact description in understandable language
+```
+
+### Progress Tracking:
+- Update the "Last Updated" timestamp whenever changes are made
+- Maintain accurate phase status in project timeline with clear descriptions
+- Document lessons learned in implementation details using simple, clear language
+- Always explain what each update means for the overall project progress
+
+### File Organization:
+- Store task logs in `.cursor/task-logs/` directory
+- Use descriptive filenames like `task-[project-name].md`
+- Reference the task file in related code files when applicable
+
+## Integration with Development Workflow
+
+### Before Starting Work:
+1. Review current task status and dependencies
+2. Update task status to "STARTING NOW" ⚡
+3. Break down work into specific subtasks if needed
+
+### During Development:
+1. Update subtask checkboxes as work progresses with brief explanations
+2. Document technical decisions and issues in real-time using clear, simple language
+3. Explain what each completed step means for the overall goal
+
+### After Completing Work:
+1. Update status to "COMPLETED" ✅ with clear explanation of what was achieved
+2. Add comprehensive implementation details in simple, understandable language
+3. Update project timeline and next milestones with clear descriptions
+4. Identify and update dependencies for subsequent tasks, explaining what this unlocks
+5. Always include a "WHAT THIS MEANS" summary that explains the impact in plain terms
+
+## Communication Guidelines for Dementia Support
+
+### Language Requirements:
+- **Use simple, clear sentences** - avoid jargon and technical terms when possible
+- **Explain technical concepts** in everyday language with analogies when helpful
+- **Repeat key information** throughout the document for clarity
+- **Use bullet points and lists** to break down complex information
+- **Provide context** for every update - explain why it matters
+
+### Status Updates Must Include:
+- **What we just finished** (in simple terms)
+- **Why this was important** (clear benefit explanation)
+- **What this enables us to do next** (logical progression)
+- **Overall progress** (where we are in the big picture)
+
+This system ensures comprehensive project tracking, clear progress visibility, and detailed documentation specifically designed for someone who needs extra clarity and context to understand what's happening.

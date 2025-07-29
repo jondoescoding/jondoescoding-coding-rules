@@ -78,6 +78,11 @@ jondoescoding-cursor-rules --help
 | `writing/tweet-interview-process` | Systematic approach for creating viral, conversion-focused tweets | `**/*.md`, `social/**/*`, `content/**/*` |
 | `writing/twitter-thread-creation` | Step-by-step guide for creating viral Twitter threads | `**/*.md`, `social/**/*`, `twitter/**/*` |
 
+### Task Management Templates
+| Template | Description | File Types |
+|----------|-------------|------------|
+| `tasking/task-management` | Comprehensive task management system with dementia-friendly clear documentation | `tasks/**/*`, `task-logs/**/*`, `.cursor/task-logs/**/*` |
+
 ### Template Details
 
 Each template includes:
@@ -107,6 +112,8 @@ jondoescoding-cursor-rules/
 │       ├── seo-long-form-article-blueprint.mdc
 │       ├── tweet-interview-process.mdc
 │       └── twitter-thread-creation.mdc
+│   └── tasking/            # Task management templates
+│       └── task-management.mdc
 ├── package.json           # Package configuration
 └── README.md             # This file
 ```
