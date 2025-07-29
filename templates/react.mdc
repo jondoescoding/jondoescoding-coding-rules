@@ -1,0 +1,74 @@
+---
+description: React development standards and patterns
+globs: ["**/*.jsx", "**/*.tsx"]
+alwaysApply: false
+---
+
+# React Development Rules
+
+## Component Structure
+- Use functional components with hooks
+- Keep components small and focused
+- Extract custom hooks for reusable logic
+- Use TypeScript for all React components
+
+## State Management
+- Use useState for local component state
+- Use useReducer for complex state logic
+- Lift state up when multiple components need it
+- Consider context for deeply nested prop drilling
+
+## Performance
+- Use useMemo for expensive calculations
+- Use useCallback for function props to prevent re-renders
+- Use React.memo for pure components
+- Implement proper key props for lists
+
+## Best Practices
+- Always provide dependency arrays for useEffect
+- Handle loading and error states explicitly
+- Use proper cleanup in useEffect when needed
+- Follow the rules of hooks
+
+## Examples
+```tsx
+// Good
+interface UserCardProps {
+  userId: string;
+  onUserSelect: (id: string) => void;
+}
+
+const UserCard: React.FC<UserCardProps> = ({ userId, onUserSelect }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const handleClick = useCallback(() => {
+    onUserSelect(userId);
+  }, [userId, onUserSelect]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const userData = await api.getUser(userId);
+        setUser(userData);
+      } catch (error) {
+        console.error('Failed to fetch user:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, [userId]);
+
+  if (loading) return <Spinner />;
+  if (!user) return <div>User not found</div>;
+
+  return (
+    <div onClick={handleClick}>
+      <h3>{user.name}</h3>
+      <p>{user.email}</p>
+    </div>
+  );
+};
+```

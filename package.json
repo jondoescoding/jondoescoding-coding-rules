@@ -1,0 +1,22 @@
+{
+  "name": "my-cursor-rules",
+  "version": "1.0.0",
+  "description": "CLI tool to manage custom Cursor AI rule templates",
+  "main": "bin/cli.js",
+  "bin": {
+    "my-cursor-rules": "./bin/cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["cursor", "ai", "rules", "templates", "cli"],
+  "author": "Jonathan",
+  "license": "MIT",
+  "files": [
+    "bin",
+    "templates"
+  ],
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
