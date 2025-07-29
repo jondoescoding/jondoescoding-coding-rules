@@ -3,20 +3,44 @@
 const fs = require('fs');
 const path = require('path');
 
-const RULES_DIR = '.cursor/rules';
-const TEMPLATES_DIR = path.join(__dirname, '../templates');
-
-function ensureRulesDirectory() {
-  if (!fs.existsSync(RULES_DIR)) {
-    fs.mkdirSync(RULES_DIR, { recursive: true });
-    console.log('📁 Created .cursor/rules directory');
+const IMPORT_CONFIGS = {
+  'cursor': {
+    dir: '.cursor/rules',
+    templates: path.join(__dirname, '../templates/cursor-rules'),
+    description: 'Cursor AI rules (.mdc files)'
+  },
+  'claude-code': {
+    dir: '.claude',
+    templates: path.join(__dirname, '../templates/.claude'),  
+    description: 'Claude Code configuration files'
   }
+};
+
+function ensureImportDirectory(importType) {
+  const config = IMPORT_CONFIGS[importType];
+  if (!config) {
+    console.error(`❌ Unknown import type: ${importType}`);
+    return false;
+  }
+  
+  if (!fs.existsSync(config.dir)) {
+    fs.mkdirSync(config.dir, { recursive: true });
+    console.log(`📁 Created ${config.dir} directory`);
+  }
+  return true;
 }
 
-function getAvailableTemplates() {
-  if (!fs.existsSync(TEMPLATES_DIR)) {
-    console.error('❌ No templates directory found');
-    process.exit(1);
+function getAvailableTemplates(importType = 'cursor') {
+  const config = IMPORT_CONFIGS[importType];
+  if (!config) {
+    console.error(`❌ Unknown import type: ${importType}`);
+    return [];
+  }
+  
+  const templatesDir = config.templates;
+  if (!fs.existsSync(templatesDir)) {
+    console.error(`❌ No templates directory found for ${importType}: ${templatesDir}`);
+    return [];
   }
   
   const templates = [];
@@ -31,32 +55,55 @@ function getAvailableTemplates() {
       if (stat.isDirectory()) {
         // Recursively scan subdirectories
         scanDirectory(fullPath, prefix ? `${prefix}/${item}` : item);
-      } else if (item.endsWith('.mdc')) {
-        // Add template with its path
-        const templateName = item.replace('.mdc', '');
+      } else if (item.endsWith('.mdc') || item.endsWith('.md') || item.endsWith('.json')) {
+        // Add template with its path (support different file types)
+        const templateName = item.replace(/\.(mdc|md|json)$/, '');
         const fullTemplateName = prefix ? `${prefix}/${templateName}` : templateName;
         templates.push(fullTemplateName);
       }
     }
   }
   
-  scanDirectory(TEMPLATES_DIR);
+  scanDirectory(templatesDir);
   return templates;
 }
 
-function installTemplate(templateName) {
-  const templatePath = path.join(TEMPLATES_DIR, `${templateName}.mdc`);
-  const targetFileName = templateName.replace(/\//g, '-'); // Replace slashes with dashes
-  const targetPath = path.join(RULES_DIR, `${targetFileName}.mdc`);
-  
-  if (!fs.existsSync(templatePath)) {
-    console.error(`❌ Template '${templateName}' not found`);
+function installTemplate(templateName, importType = 'cursor') {
+  const config = IMPORT_CONFIGS[importType];
+  if (!config) {
+    console.error(`❌ Unknown import type: ${importType}`);
     return false;
   }
   
+  // Find the actual template file (could be .mdc, .md, or .json)
+  const possibleExtensions = ['.mdc', '.md', '.json'];
+  let templatePath = null;
+  let actualExtension = '';
+  
+  for (const ext of possibleExtensions) {
+    const testPath = path.join(config.templates, `${templateName}${ext}`);
+    if (fs.existsSync(testPath)) {
+      templatePath = testPath;
+      actualExtension = ext;
+      break;
+    }
+  }
+  
+  if (!templatePath) {
+    console.error(`❌ Template '${templateName}' not found for ${importType}`);
+    return false;
+  }
+  
+  if (!ensureImportDirectory(importType)) {
+    return false;
+  }
+  
+  const targetFileName = templateName.replace(/\//g, '-'); // Replace slashes with dashes
+  const targetPath = path.join(config.dir, `${targetFileName}${actualExtension}`);
+  
   try {
     fs.copyFileSync(templatePath, targetPath);
-    console.log(`✅ Added ${targetFileName}.mdc to your cursor rules`);
+    console.log(`✅ Added ${targetFileName}${actualExtension} to your ${config.description.toLowerCase()}`);
     return true;
   } catch (error) {
     console.error(`❌ Failed to install ${templateName}: ${error.message}`);
@@ -66,33 +113,42 @@ function installTemplate(templateName) {
 
 function showHelp() {
   console.log(`
-🎯 My Cursor Rules CLI
+🎯 JonDoesCoding Development Rules CLI
 
 Usage:
-  npx my-cursor-rules [options]
+  npx jondoescoding-cursor-rules [options] [template-name]
 
 Options:
+  --type <type>       Import type: 'cursor' (default) or 'claude-code'
   --list, -l          List all available templates
   --all              Install all available templates
   --help, -h         Show this help message
   <template-name>    Install a specific template
 
+Import Types:
+  cursor             Cursor AI rules (.mdc files) - Default
+  claude-code        Claude Code configuration files
+
 Examples:
-  npx my-cursor-rules --list
-  npx my-cursor-rules typescript
-  npx my-cursor-rules --all
+  npx jondoescoding-cursor-rules --list --type cursor
+  npx jondoescoding-cursor-rules --list --type claude-code
+  npx jondoescoding-cursor-rules typescript
+  npx jondoescoding-cursor-rules --type cursor writing/scott-adams-writing-principles
+  npx jondoescoding-cursor-rules --type claude-code python/config
+  npx jondoescoding-cursor-rules --all --type cursor
 `);
 }
 
-function listTemplates() {
-  const templates = getAvailableTemplates();
+function listTemplates(importType = 'cursor') {
+  const config = IMPORT_CONFIGS[importType];
+  const templates = getAvailableTemplates(importType);
   
   if (templates.length === 0) {
-    console.log('❌ No templates found');
+    console.log(`❌ No templates found for ${importType}`);
     return;
   }
   
-  console.log('\n📋 Available templates:');
+  console.log(`\n📋 Available ${config.description}:`);
   
   // Group templates by category
   const grouped = {};
@@ -123,21 +179,21 @@ function listTemplates() {
     });
   });
   
-  console.log('\n💡 Usage: npx jondoescoding-cursor-rules <template-name>');
-  console.log('   Example: npx jondoescoding-cursor-rules python/llm/observability/langfuse\n');
+  console.log(`\n💡 Usage: npx jondoescoding-cursor-rules --type ${importType} <template-name>`);
+  console.log(`   Example: npx jondoescoding-cursor-rules --type ${importType} ${templates[0] || 'template-name'}\n`);
 }
 
-function installAllTemplates() {
-  const templates = getAvailableTemplates();
+function installAllTemplates(importType = 'cursor') {
+  const templates = getAvailableTemplates(importType);
   let installed = 0;
   
   templates.forEach(template => {
-    if (installTemplate(template)) {
+    if (installTemplate(template, importType)) {
       installed++;
     }
   });
   
-  console.log(`\n🎉 Installed ${installed}/${templates.length} templates`);
+  console.log(`\n🎉 Installed ${installed}/${templates.length} ${IMPORT_CONFIGS[importType].description.toLowerCase()}`);
 }
 
 function main() {
@@ -148,23 +204,43 @@ function main() {
     return;
   }
   
-  ensureRulesDirectory();
+  // Parse --type parameter
+  let importType = 'cursor'; // default
+  const typeIndex = args.indexOf('--type');
+  if (typeIndex !== -1 && typeIndex + 1 < args.length) {
+    importType = args[typeIndex + 1];
+    // Remove --type and its value from args
+    args.splice(typeIndex, 2);
+  }
+  
+  // Validate import type
+  if (!IMPORT_CONFIGS[importType]) {
+    console.error(`❌ Unknown import type: ${importType}`);
+    console.error(`Available types: ${Object.keys(IMPORT_CONFIGS).join(', ')}`);
+    return;
+  }
   
   if (args.includes('--list') || args.includes('-l')) {
-    listTemplates();
+    listTemplates(importType);
     return;
   }
   
   if (args.includes('--all')) {
-    installAllTemplates();
+    installAllTemplates(importType);
     return;
   }
   
   // Install specific templates
-  args.forEach(templateName => {
-    if (!templateName.startsWith('--')) {
-      installTemplate(templateName);
-    }
+  const templatesToInstall = args.filter(arg => !arg.startsWith('--'));
+  
+  if (templatesToInstall.length === 0) {
+    console.error('❌ No templates specified');
+    showHelp();
+    return;
+  }
+  
+  templatesToInstall.forEach(templateName => {
+    installTemplate(templateName, importType);
   });
 }
 

@@ -7,45 +7,72 @@
 
 ## 🚀 What This Does
 
-This CLI tool allows you to quickly install pre-configured Cursor AI rules into your projects. Cursor AI rules (`.mdc` files) help guide AI assistants to follow your coding standards, best practices, and project-specific conventions.
+This CLI tool allows you to quickly install pre-configured templates for both Cursor AI and Claude Code into your projects. Choose the right import type for your AI development workflow.
 
 ### Key Features
 
-- 📦 **Easy Installation**: One command to install any rule template
-- 🎨 **Multiple Templates**: Pre-built rules for popular technologies
-- 🔧 **Customizable**: Easy to add your own custom rule templates
-- 🌐 **Shareable**: Distribute your team's coding standards as npm packages
-- 🎯 **Focused**: Rules are applied to specific file types using glob patterns
+- 📦 **Dual AI Support**: Templates for both Cursor AI and Claude Code
+- 🎨 **Multiple Categories**: Pre-built templates for popular technologies
+- 🔧 **Customizable**: Easy to add your own custom templates
+- 🌐 **Shareable**: Distribute your team's standards as npm packages
+- 🎯 **Targeted Installation**: Choose exactly what you need with `--type` parameter
 
-## 📋 What Are Cursor Rules?
+## 🤖 Import Types
 
-Cursor rules are markdown files (`.mdc`) placed in `.cursor/rules/` that provide context and coding standards to AI assistants. They help ensure consistent:
+### `--type cursor` (Default)
+- **Purpose**: Cursor AI coding rules and standards
+- **Location**: `.cursor/rules/`
+- **Format**: `.mdc` files
+- **Use Case**: Guide Cursor AI's code suggestions and completions
 
+### `--type claude-code`
+- **Purpose**: Claude Code workflow optimization
+- **Location**: `.claude/`
+- **Format**: `.md` files
+- **Use Case**: Improve communication and productivity with Claude Code
+
+## 📋 Template Types Explained
+
+### Cursor AI Rules (`.mdc` files)
+Cursor rules are markdown files placed in `.cursor/rules/` that provide context and coding standards to Cursor AI. They help ensure consistent:
 - Code style and formatting
-- Architecture patterns
+- Architecture patterns  
 - Best practices
 - Error handling approaches
 - Naming conventions
+
+### Claude Code Configuration (`.md` files)
+Claude Code templates are workflow guides placed in `.claude/` that optimize your collaboration with Claude Code:
+- Project setup and organization
+- Communication patterns
+- Context management strategies
+- Productivity workflows
+- Best practices for AI collaboration
 
 ## 🛠 Installation & Usage
 
 ### Quick Start (Recommended)
 
 ```bash
-# List available templates
-npx jondoescoding-cursor-rules --list
+# List available templates by type
+npx jondoescoding-cursor-rules --list --type cursor
+npx jondoescoding-cursor-rules --list --type claude-code
 
-# Install a specific template
+# Install specific templates (defaults to cursor type)
 npx jondoescoding-cursor-rules typescript
+npx jondoescoding-cursor-rules writing/scott-adams-writing-principles
+
+# Install with explicit type
+npx jondoescoding-cursor-rules --type cursor python/llm/observability/langfuse
+npx jondoescoding-cursor-rules --type claude-code memory-management
 
 # Install multiple templates
 npx jondoescoding-cursor-rules typescript react nodejs
+npx jondoescoding-cursor-rules --type claude-code memory-management project-setup
 
-# Install nested templates
-npx jondoescoding-cursor-rules python/llm/observability/langfuse writing/scott-adams-writing-principles
-
-# Install all available templates
-npx jondoescoding-cursor-rules --all
+# Install all available templates of a type
+npx jondoescoding-cursor-rules --all --type cursor
+npx jondoescoding-cursor-rules --all --type claude-code
 ```
 
 ### Global Installation
@@ -56,6 +83,9 @@ jondoescoding-cursor-rules --help
 ```
 
 ## 📚 Available Templates
+
+## 🎯 Cursor AI Rules (`--type cursor`)
+*Installed to `.cursor/rules/` - Used by Cursor AI for coding assistance*
 
 ### Core Templates
 | Template | Description | File Types |
@@ -82,6 +112,15 @@ jondoescoding-cursor-rules --help
 | Template | Description | File Types |
 |----------|-------------|------------|
 | `tasking/task-management` | Comprehensive task management system with dementia-friendly clear documentation | `tasks/**/*`, `task-logs/**/*`, `.cursor/task-logs/**/*` |
+
+## 🤖 Claude Code Configuration (`--type claude-code`)
+*Installed to `.claude/` - Used for Claude Code workflow optimization*
+
+| Template | Description | Purpose |
+|----------|-------------|---------|
+| `memory-management` | Claude Code memory and context management strategies | Improve context retention across conversations |
+| `project-setup` | Optimal project structure and configuration for Claude Code | Set up projects for effective AI collaboration |
+| `workflow-optimization` | Communication patterns and productivity tips for Claude Code | Maximize efficiency when working with Claude |
 
 ### Template Details
 
@@ -114,6 +153,13 @@ jondoescoding-cursor-rules/
 │       └── twitter-thread-creation.mdc
 │   └── tasking/            # Task management templates
 │       └── task-management.mdc
+├── templates/
+│   ├── cursor-rules/        # Cursor AI rule templates
+│   │   ├── [all above templates]
+│   └── .claude/            # Claude Code configuration templates
+│       ├── memory-management.md
+│       ├── project-setup.md
+│       └── workflow-optimization.md
 ├── package.json           # Package configuration
 └── README.md             # This file
 ```
