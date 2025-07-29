@@ -19,14 +19,35 @@ function getAvailableTemplates() {
     process.exit(1);
   }
   
-  return fs.readdirSync(TEMPLATES_DIR)
-    .filter(file => file.endsWith('.mdc'))
-    .map(file => file.replace('.mdc', ''));
+  const templates = [];
+  
+  function scanDirectory(dir, prefix = '') {
+    const items = fs.readdirSync(dir);
+    
+    for (const item of items) {
+      const fullPath = path.join(dir, item);
+      const stat = fs.statSync(fullPath);
+      
+      if (stat.isDirectory()) {
+        // Recursively scan subdirectories
+        scanDirectory(fullPath, prefix ? `${prefix}/${item}` : item);
+      } else if (item.endsWith('.mdc')) {
+        // Add template with its path
+        const templateName = item.replace('.mdc', '');
+        const fullTemplateName = prefix ? `${prefix}/${templateName}` : templateName;
+        templates.push(fullTemplateName);
+      }
+    }
+  }
+  
+  scanDirectory(TEMPLATES_DIR);
+  return templates;
 }
 
 function installTemplate(templateName) {
   const templatePath = path.join(TEMPLATES_DIR, `${templateName}.mdc`);
-  const targetPath = path.join(RULES_DIR, `${templateName}.mdc`);
+  const targetFileName = templateName.replace(/\//g, '-'); // Replace slashes with dashes
+  const targetPath = path.join(RULES_DIR, `${targetFileName}.mdc`);
   
   if (!fs.existsSync(templatePath)) {
     console.error(`❌ Template '${templateName}' not found`);
@@ -35,7 +56,7 @@ function installTemplate(templateName) {
   
   try {
     fs.copyFileSync(templatePath, targetPath);
-    console.log(`✅ Added ${templateName}.mdc to your cursor rules`);
+    console.log(`✅ Added ${targetFileName}.mdc to your cursor rules`);
     return true;
   } catch (error) {
     console.error(`❌ Failed to install ${templateName}: ${error.message}`);
@@ -72,10 +93,38 @@ function listTemplates() {
   }
   
   console.log('\n📋 Available templates:');
+  
+  // Group templates by category
+  const grouped = {};
   templates.forEach(template => {
-    console.log(`  • ${template}`);
+    const parts = template.split('/');
+    if (parts.length === 1) {
+      // Root level template
+      if (!grouped['Root']) grouped['Root'] = [];
+      grouped['Root'].push(template);
+    } else {
+      // Nested template
+      const category = parts.slice(0, -1).join('/');
+      if (!grouped[category]) grouped[category] = [];
+      grouped[category].push(template);
+    }
   });
-  console.log();
+  
+  // Display grouped templates
+  Object.keys(grouped).sort().forEach(category => {
+    if (category === 'Root') {
+      console.log('\n  📁 Core Templates:');
+    } else {
+      console.log(`\n  📁 ${category}:`);
+    }
+    grouped[category].forEach(template => {
+      const displayName = template.split('/').pop();
+      console.log(`    • ${template}`);
+    });
+  });
+  
+  console.log('\n💡 Usage: npx jondoescoding-cursor-rules <template-name>');
+  console.log('   Example: npx jondoescoding-cursor-rules python/llm/observability/langfuse\n');
 }
 
 function installAllTemplates() {

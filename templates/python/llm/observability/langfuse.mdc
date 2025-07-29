@@ -1,0 +1,496 @@
+---
+description: Complete guide for setting up LangFuse tracing in FastAPI + LangChain/LangGraph projects
+globs: ["**/*.py", "src/**/*", "api/**/*", "services/**/*", "core/**/*"]
+alwaysApply: false
+---
+
+# LangFuse Tracing Setup Guide for FastAPI + LangChain/LangGraph
+
+This guide provides step-by-step instructions for implementing comprehensive LangFuse tracing in a FastAPI application using LangChain/LangGraph agents.
+
+## 🎯 Overview
+
+LangFuse provides observability for LLM applications through automatic tracing of LangChain operations. This guide covers the **CallbackHandler method** which integrates naturally with LangChain's callback system.
+
+## 🚨 Critical Fix: CallbackHandler Auth Check Error
+
+**IMPORTANT**: If you encounter `'LangchainCallbackHandler' object has no attribute 'auth_check'` error:
+
+```python
+# ❌ WRONG - Don't do this with langfuse.langchain import
+from langfuse.langchain import CallbackHandler
+handler = CallbackHandler()
+handler.auth_check()  # This will fail!
+
+# ✅ CORRECT - Remove auth_check() call entirely
+from langfuse.langchain import CallbackHandler
+handler = CallbackHandler()  # No auth_check needed
+```
+
+**Root Cause**: The `CallbackHandler` from `langfuse.langchain` doesn't have `auth_check()` method. Only the generic `CallbackHandler` from `langfuse.callback` has this method.
+
+## 📦 Step 1: Install Dependencies
+
+Add to your `pyproject.toml`:
+```toml
+[project]
+dependencies = [
+    "langfuse",
+    # ... other dependencies
+]
+```
+
+## ⚙️ Step 2: Environment Configuration
+
+Add to your settings class (typically in `src/utils/config.py`):
+```python
+# LangFuse Configuration
+LANGFUSE_PUBLIC_KEY: str = os.getenv("LANGFUSE_PUBLIC_KEY", "")
+LANGFUSE_SECRET_KEY: str = os.getenv("LANGFUSE_SECRET_KEY", "")
+LANGFUSE_HOST: str = os.getenv("LANGFUSE_HOST", "https://cloud.langfuse.com")
+```
+
+Add to your `.env` file:
+```env
+LANGFUSE_PUBLIC_KEY=pk-lf-...
+LANGFUSE_SECRET_KEY=sk-lf-...
+LANGFUSE_HOST=https://cloud.langfuse.com
+```
+
+## 🔧 Step 3: Create LangFuse Configuration Module
+
+Create `src/core/langfuse_config.py`:
+
+```python
+"""
+LangFuse tracing configuration and utilities for FastAPI + LangChain applications.
+"""
+
+# Python Standard Library
+import time
+import logging
+from typing import Optional, Dict, Any
+from contextlib import asynccontextmanager
+
+# Third-Party Packages
+from langfuse.langchain import CallbackHandler
+from langfuse import Langfuse
+
+# Local Imports
+from utils.config import get_settings
+
+logger = logging.getLogger(__name__)
+
+def get_langfuse_client() -> Optional[Langfuse]:
+    """Get initialized LangFuse client"""
+    try:
+        settings = get_settings()
+        
+        if not settings.LANGFUSE_PUBLIC_KEY or not settings.LANGFUSE_SECRET_KEY:
+            logger.warning("LangFuse keys not configured, tracing disabled")
+            return None
+        
+        client = Langfuse(
+            public_key=settings.LANGFUSE_PUBLIC_KEY,
+            secret_key=settings.LANGFUSE_SECRET_KEY,
+            host=settings.LANGFUSE_HOST
+        )
+        
+        # Test connection (client has auth_check, handler doesn't)
+        try:
+            client.auth_check()
+            logger.info("LangFuse connection verified successfully")
+            return client
+        except Exception as e:
+            logger.error(f"LangFuse connection failed: {e}")
+            return None
+            
+    except Exception as e:
+        logger.error(f"Failed to initialize LangFuse client: {e}")
+        return None
+
+def get_langfuse_handler() -> Optional[CallbackHandler]:
+    """Get initialized LangFuse CallbackHandler"""
+    try:
+        settings = get_settings()
+        
+        if not settings.LANGFUSE_PUBLIC_KEY or not settings.LANGFUSE_SECRET_KEY:
+            logger.warning("LangFuse keys not configured, callback handler disabled")
+            return None
+        
+        # CRITICAL: Don't call auth_check() on CallbackHandler from langfuse.langchain
+        handler = CallbackHandler()
+        logger.info("LangFuse CallbackHandler initialized successfully")
+        
+        return handler
+        
+    except Exception as e:
+        logger.error(f"Failed to create LangFuse CallbackHandler: {e}")
+        return None
+
+def get_langfuse_config(
+    conversation_id: Optional[str] = None,
+    endpoint_name: Optional[str] = None,
+    trace_name: Optional[str] = None,
+    additional_metadata: Optional[Dict[str, Any]] = None
+) -> Dict[str, Any]:
+    """
+    Get config dict with CallbackHandler for LangChain/LangGraph
+    
+    Args:
+        conversation_id: Unique conversation identifier
+        endpoint_name: API endpoint name for tagging
+        trace_name: Custom trace name
+        additional_metadata: Extra metadata to include
+    
+    Returns:
+        Config dictionary for LangChain/LangGraph agents
+    """
+    try:
+        settings = get_settings()
+        handler = get_langfuse_handler()
+        
+        if not handler:
+            return {"callbacks": []}
+        
+        # Build metadata
+        metadata = {
+            "environment": settings.ENVIRONMENT.lower(),
+            "timestamp": time.time()
+        }
+        
+        if conversation_id:
+            metadata["conversation_id"] = conversation_id
+        
+        if endpoint_name:
+            metadata["endpoint"] = endpoint_name
+        
+        if additional_metadata:
+            metadata.update(additional_metadata)
+        
+        # Build tags
+        tags = [
+            f"environment:{settings.ENVIRONMENT.lower()}",
+        ]
+        
+        if endpoint_name:
+            tags.append(f"endpoint:{endpoint_name}")
+        
+        # Configure the handler with trace context
+        config = {
+            "callbacks": [handler],
+            "metadata": metadata,
+            "tags": tags
+        }
+        
+        # Add trace name if provided
+        if trace_name:
+            config["run_name"] = trace_name
+        
+        return config
+        
+    except Exception as e:
+        logger.error(f"Failed to create LangFuse config: {e}")
+        return {"callbacks": []}
+
+@asynccontextmanager
+async def langfuse_trace_context(
+    trace_name: str,
+    conversation_id: Optional[str] = None,
+    endpoint_name: Optional[str] = None,
+    additional_metadata: Optional[Dict[str, Any]] = None
+):
+    """
+    Context manager for LangFuse trace with custom metrics
+    
+    Usage:
+        async with langfuse_trace_context("rag_chat", conversation_id="123") as metrics:
+            # Your agent code here
+            result = await agent.ainvoke(input, config=metrics.config)
+    """
+    class Metrics:
+        def __init__(self):
+            self.start_time = time.time()
+            self.config = get_langfuse_config(
+                conversation_id=conversation_id,
+                endpoint_name=endpoint_name,
+                trace_name=trace_name,
+                additional_metadata=additional_metadata
+            )
+        
+        def add_tagger_timing(self, tagger_name: str, duration: float):
+            """Track individual AI tagger performance"""
+            logger.info(f"Tagger {tagger_name} completed in {duration:.2f}s")
+        
+        def add_error(self, error_type: str, error_message: str):
+            """Track errors for failure rate calculation"""
+            logger.error(f"Error in trace: {error_type} - {error_message}")
+    
+    metrics = Metrics()
+    
+    try:
+        yield metrics
+    except Exception as e:
+        logger.error(f"Error in LangFuse trace context: {e}")
+        raise
+    finally:
+        total_time = time.time() - metrics.start_time
+        logger.info(f"Trace '{trace_name}' completed in {total_time:.2f}s")
+```
+
+## 🚀 Step 4: Add to Application Startup
+
+In your `src/core/lifespan.py`:
+
+```python
+from core.langfuse_config import get_langfuse_handler
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # ... existing startup code ...
+    
+    # Initialize LangFuse tracing
+    logger.info("Initializing LangFuse tracing...")
+    try:
+        langfuse_handler = get_langfuse_handler()
+        if langfuse_handler:
+            logger.info("LangFuse tracing initialized successfully")
+        else:
+            logger.warning("LangFuse tracing not available - continuing without tracing")
+    except Exception as e:
+        logger.error(f"Failed to initialize LangFuse: {e}")
+        logger.warning("LangFuse tracing not available - continuing without tracing")
+    
+    # ... rest of startup ...
+```
+
+## 🤖 Step 5: Add Tracing to Agent Services
+
+### For RAG Agent Service:
+
+```python
+# In src/services/rag_agent_service.py
+from core.langfuse_config import get_langfuse_config
+
+async def run_rag_agent(request, user_question: str, conversation_id: str):
+    """Run RAG agent with LangFuse tracing"""
+    
+    # Get LangFuse configuration
+    config = get_langfuse_config(
+        conversation_id=conversation_id,
+        endpoint_name="rag_chat",
+        additional_metadata={
+            "question_length": len(user_question),
+            "has_retrieval": True
+        }
+    )
+    
+    # Add thread configuration for conversation memory
+    config["configurable"] = {"thread_id": conversation_id}
+    
+    # Execute agent with tracing
+    response = await rag_agent.ainvoke({
+        "messages": [HumanMessage(content=user_question)]
+    }, config=config)
+    
+    return response
+
+async def run_rag_agent_stream(request, user_question: str, conversation_id: str):
+    """Run RAG agent with streaming and LangFuse tracing"""
+    
+    config = get_langfuse_config(
+        conversation_id=conversation_id,
+        endpoint_name="rag_chat_stream"
+    )
+    config["configurable"] = {"thread_id": conversation_id}
+    
+    # Stream with tracing
+    async for event in rag_agent.astream_events({
+        "messages": [HumanMessage(content=user_question)]
+    }, config=config, version="v2"):
+        yield event
+```
+
+### For Basic Q&A Agent:
+
+```python
+# In src/services/q_a_agent_service.py
+from core.langfuse_config import get_langfuse_config
+
+async def run_basic_agent(user_question: str, conversation_id: str):
+    """Run basic Q&A agent with LangFuse tracing"""
+    
+    config = get_langfuse_config(
+        conversation_id=conversation_id,
+        endpoint_name="basic_chat",
+        additional_metadata={
+            "question_length": len(user_question),
+            "agent_type": "basic_qa"
+        }
+    )
+    
+    response = await basic_agent.ainvoke({
+        "messages": [HumanMessage(content=user_question)]
+    }, config=config)
+    
+    return response
+```
+
+### For Document Analysis Service:
+
+```python
+# In src/services/document_feed_service.py or optimized version
+from core.langfuse_config import langfuse_trace_context
+
+async def process_document(self, request: DocumentRequest) -> DocumentResponse:
+    """Process document with LangFuse tracing"""
+    
+    # Add comprehensive tracing context
+    async with langfuse_trace_context(
+        trace_name="document_analysis",
+        conversation_id=request.id,
+        endpoint_name="document_feed",
+        additional_metadata={
+            "article_id": request.id,
+            "title_length": len(request.title),
+            "content_length": len(request.content),
+            "save_to_pinecone": request.save_to_pinecone
+        }
+    ) as metrics:
+        
+        try:
+            # Execute analysis with tracing
+            result = await self.analysis_chain.ainvoke({
+                "title": request.title,
+                "content": request.content
+            }, config=metrics.config)
+            
+            # Track performance
+            metrics.add_tagger_timing("comprehensive_analysis", time.time() - start_time)
+            
+            return result
+            
+        except Exception as e:
+            # Track errors
+            metrics.add_error("processing_error", str(e))
+            raise
+```
+
+## 🌐 Step 6: Add Trace Context to API Endpoints
+
+### For Chat Endpoints:
+
+```python
+# In src/api/v0/chat_routers.py
+from core.langfuse_config import get_langfuse_client
+
+@api_router.post("/chat_with_rag_enabled")
+async def chat_with_rag_enabled(chat_request: ChatRequest, fastapi_request: Request):
+    """Chat endpoint with LangFuse trace context"""
+    
+    # Add trace context
+    try:
+        settings = get_settings()
+        langfuse_client = get_langfuse_client()
+        
+        if langfuse_client:
+            langfuse_client.update_current_trace(
+                name=f"rag_chat_endpoint_{chat_request.conversation_id}",
+                tags=[f"environment:{settings.ENVIRONMENT.lower()}", "endpoint:rag_chat"],
+                metadata={
+                    "conversation_id": chat_request.conversation_id,
+                    "question_length": len(chat_request.user_question),
+                    "endpoint_type": "rag_chat"
+                }
+            )
+    except Exception as trace_error:
+        logger.warning(f"Failed to update LangFuse trace: {trace_error}")
+    
+    # Call service with tracing
+    answer, metadata = await run_rag_agent(
+        request=fastapi_request,
+        user_question=chat_request.user_question,
+        conversation_id=chat_request.conversation_id
+    )
+    
+    return ChatResponse(answer=answer, metadata=metadata)
+```
+
+## 🧪 Testing Your Setup
+
+### 1. Test Basic Functionality:
+```bash
+# Test chat endpoint
+curl -X POST "http://localhost:8000/api/v0/chat_with_rag_enabled" \
+  -H "Content-Type: application/json" \
+  -d '{"message": "test langfuse integration", "conversation_id": "test-123"}'
+```
+
+### 2. Test Document Analysis:
+```bash
+# Test document feed
+curl -X POST "http://localhost:8000/api/v0/document-feed/analyze" \
+  -H "Content-Type: application/json" \
+  -d '{"id": "test-article", "title": "Test", "content": "Test content", "save_to_pinecone": false}'
+```
+
+### 3. Check LangFuse Dashboard:
+- Visit your LangFuse Cloud dashboard
+- Look for traces with environment tags (e.g., "environment:development")
+- Verify OpenAI calls are captured automatically
+- Check that conversation threads are properly grouped
+
+## 🔍 What Success Looks Like
+
+After implementation, you should see:
+
+1. **Comprehensive Traces**: All agent executions appear in LangFuse dashboard
+2. **Environment Tagging**: Traces tagged with "development" or "production"
+3. **OpenAI Call Tracing**: Individual LLM calls with token usage and timing
+4. **Tool Usage Tracking**: Pinecone searches and other tool calls
+5. **Error Tracking**: Failed operations logged with error details
+6. **Conversation Threading**: Related messages grouped by conversation_id
+
+## 🚨 Common Issues & Solutions
+
+### Issue: `auth_check` AttributeError
+**Solution**: Remove `handler.auth_check()` calls from CallbackHandler usage
+
+### Issue: Traces Not Appearing
+**Solutions**:
+- Verify environment variables are set correctly
+- Check application logs for LangFuse initialization errors
+- Ensure `config={"callbacks": [handler]}` is passed to agent calls
+
+### Issue: Streaming Broken
+**Solution**: Ensure CallbackHandler doesn't interfere with response format:
+```python
+# Maintain AI SDK compatibility
+async for event in agent.astream_events(input, config=config, version="v2"):
+    # Process event maintaining original format
+    yield event
+```
+
+### Issue: Missing Tool Traces
+**Solution**: Ensure tools (like Pinecone search) are properly configured in agent setup
+
+## 📚 Key Files to Modify
+
+1. `src/core/langfuse_config.py` - Main configuration
+2. `src/core/lifespan.py` - Application startup
+3. `src/services/rag_agent_service.py` - RAG agent tracing
+4. `src/services/q_a_agent_service.py` - Basic agent tracing
+5. `src/services/document_feed_service.py` - Document analysis tracing
+6. `src/api/v0/chat_routers.py` - Chat endpoint context
+7. `src/api/v0/document_feed_router.py` - Document endpoint context
+
+## 💡 Best Practices
+
+1. **Graceful Degradation**: Application should work even if LangFuse fails
+2. **Environment Tagging**: Always tag traces with environment
+3. **Meaningful Names**: Use descriptive trace names for easy identification
+4. **Error Handling**: Wrap tracing code in try-catch blocks
+5. **Performance Monitoring**: Track timing and token usage
+6. **Conversation Threading**: Group related interactions by conversation_id
+
+This guide provides everything needed to implement comprehensive LangFuse tracing in your FastAPI + LangChain/LangGraph application.

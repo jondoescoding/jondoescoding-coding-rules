@@ -1,6 +1,6 @@
 {
   "name": "jondoescoding-cursor-rules",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "CLI tool to manage custom Cursor AI rule templates for enhanced AI-assisted development",
   "main": "bin/cli.js",
   "bin": {

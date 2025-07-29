@@ -41,6 +41,9 @@ npx jondoescoding-cursor-rules typescript
 # Install multiple templates
 npx jondoescoding-cursor-rules typescript react nodejs
 
+# Install nested templates
+npx jondoescoding-cursor-rules python/llm/observability/langfuse
+
 # Install all available templates
 npx jondoescoding-cursor-rules --all
 ```
@@ -54,11 +57,17 @@ jondoescoding-cursor-rules --help
 
 ## 📚 Available Templates
 
+### Core Templates
 | Template | Description | File Types |
 |----------|-------------|------------|
 | `typescript` | TypeScript coding standards and best practices | `*.ts`, `*.tsx` |
 | `react` | React development standards and patterns | `*.jsx`, `*.tsx` |
 | `nodejs` | Node.js backend development standards | `*.js`, `*.ts`, `server/**/*`, `api/**/*` |
+
+### Python Templates
+| Template | Description | File Types |
+|----------|-------------|------------|
+| `python/llm/observability/langfuse` | Complete LangFuse tracing setup for FastAPI + LangChain/LangGraph | `**/*.py`, `src/**/*`, `api/**/*` |
 
 ### Template Details
 
@@ -78,7 +87,11 @@ jondoescoding-cursor-rules/
 ├── templates/              # Rule templates directory
 │   ├── typescript.mdc      # TypeScript rules
 │   ├── react.mdc          # React rules
-│   └── nodejs.mdc         # Node.js rules
+│   ├── nodejs.mdc         # Node.js rules
+│   └── python/            # Python-specific templates
+│       └── llm/           # LLM development templates
+│           └── observability/
+│               └── langfuse.mdc  # LangFuse tracing guide
 ├── package.json           # Package configuration
 └── README.md             # This file
 ```
@@ -87,10 +100,15 @@ jondoescoding-cursor-rules/
 
 ### 1. Create Template File
 
-Create a new `.mdc` file in the `templates/` directory:
+Create a new `.mdc` file in the `templates/` directory. You can organize templates in nested folders:
 
 ```bash
+# Root level template
 touch templates/your-template-name.mdc
+
+# Nested template (creates folder structure automatically)
+mkdir -p templates/category/subcategory
+touch templates/category/subcategory/your-template.mdc
 ```
 
 ### 2. Template Format
@@ -224,12 +242,20 @@ node bin/cli.js typescript
 Create organization-specific rules:
 
 ```bash
-# Example: Create a company-wide rule set
+# Example: Create a company-wide rule set with categories
 templates/
 ├── company-typescript.mdc    # Your TS standards
 ├── company-react.mdc        # Your React patterns  
-├── company-api.mdc          # Your API conventions
-└── company-testing.mdc      # Your testing standards
+├── api/
+│   ├── rest.mdc             # REST API conventions
+│   └── graphql.mdc         # GraphQL patterns
+├── testing/
+│   ├── unit.mdc            # Unit testing standards
+│   └── integration.mdc     # Integration testing
+└── python/
+    ├── fastapi.mdc         # FastAPI patterns
+    └── llm/
+        └── langchain.mdc   # LangChain standards
 ```
 
 ## 🔍 How It Works
