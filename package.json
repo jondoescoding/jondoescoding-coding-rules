@@ -1,20 +1,30 @@
 {
-  "name": "my-cursor-rules",
+  "name": "jondoescoding-cursor-rules",
   "version": "1.0.0",
-  "description": "CLI tool to manage custom Cursor AI rule templates",
+  "description": "CLI tool to manage custom Cursor AI rule templates for enhanced AI-assisted development",
   "main": "bin/cli.js",
   "bin": {
-    "my-cursor-rules": "./bin/cli.js"
+    "jondoescoding-cursor-rules": "./bin/cli.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["cursor", "ai", "rules", "templates", "cli"],
+  "keywords": ["cursor", "ai", "rules", "templates", "cli", "development", "coding-standards"],
   "author": "Jonathan",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jondoescoding/jondoescoding-cursor-rules.git"
+  },
+  "homepage": "https://github.com/jondoescoding/jondoescoding-cursor-rules#readme",
+  "bugs": {
+    "url": "https://github.com/jondoescoding/jondoescoding-cursor-rules/issues"
+  },
   "files": [
     "bin",
-    "templates"
+    "templates",
+    "README.md",
+    "LICENSE"
   ],
   "engines": {
     "node": ">=14.0.0"

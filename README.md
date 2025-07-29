@@ -1,8 +1,8 @@
-# 🎯 My Cursor Rules CLI
+# 🎯 JonDoesCoding Cursor Rules CLI
 
 > A powerful CLI tool to manage and distribute custom Cursor AI rule templates for enhanced AI-assisted development.
 
-[![npm version](https://badge.fury.io/js/my-cursor-rules.svg)](https://badge.fury.io/js/my-cursor-rules)
+[![npm version](https://badge.fury.io/js/jondoescoding-cursor-rules.svg)](https://badge.fury.io/js/jondoescoding-cursor-rules)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## 🚀 What This Does
@@ -33,23 +33,23 @@ Cursor rules are markdown files (`.mdc`) placed in `.cursor/rules/` that provide
 
 ```bash
 # List available templates
-npx my-cursor-rules --list
+npx jondoescoding-cursor-rules --list
 
 # Install a specific template
-npx my-cursor-rules typescript
+npx jondoescoding-cursor-rules typescript
 
 # Install multiple templates
-npx my-cursor-rules typescript react nodejs
+npx jondoescoding-cursor-rules typescript react nodejs
 
 # Install all available templates
-npx my-cursor-rules --all
+npx jondoescoding-cursor-rules --all
 ```
 
 ### Global Installation
 
 ```bash
-npm install -g my-cursor-rules
-my-cursor-rules --help
+npm install -g jondoescoding-cursor-rules
+jondoescoding-cursor-rules --help
 ```
 
 ## 📚 Available Templates
@@ -72,7 +72,7 @@ Each template includes:
 ## 📁 Project Structure
 
 ```
-my-cursor-rules/
+jondoescoding-cursor-rules/
 ├── bin/
 │   └── cli.js              # Main CLI script
 ├── templates/              # Rule templates directory
@@ -188,9 +188,9 @@ def get_user_profile(user_id):
 ### Local Development
 
 ```bash
-# Clone and setup
-git clone <your-repo>
-cd my-cursor-rules
+# Clone and setup  
+git clone https://github.com/jondoescoding/jondoescoding-cursor-rules.git
+cd jondoescoding-cursor-rules
 npm install
 
 # Test locally
