@@ -1,0 +1,115 @@
+---
+description: Scott Adams writing principles for clear, persuasive content creation
+globs: ["**/*.md", "**/*.txt", "content/**/*", "blog/**/*"]
+alwaysApply: false
+---
+
+# Scott Adams Writing Principles
+
+Based on "The Day You Became a Better Writer" by Scott Adams (Dilbert creator), these principles create clear, persuasive writing that hooks readers and drives action.
+
+## Core Philosophy
+
+Business writing is about **clarity and persuasion**. Simple writing is persuasive. A good argument in five sentences will sway more people than a brilliant argument in a hundred sentences.
+
+## The 6 Essential Rules
+
+### 1. Keep Things Simple
+- Simple writing is persuasive
+- Don't fight complexity - embrace simplicity
+- Focus on one clear message per piece
+
+### 2. Prune Your Sentences
+- Remove extra words ruthlessly
+- Don't write "He was very happy" when you can write "He was happy"
+- Words like "very", "really", "quite" add nothing - cut them
+- Eliminate unnecessary modifiers and filler
+
+### 3. Use Active Voice & Proper Structure
+- Readers comprehend "the boy hit the ball" quicker than "the ball was hit by the boy"
+- Put the person/object before the action
+- All brains organize information this way
+- Example: "I watched professionals realize..." not "Professionals were watched by me as they realized..."
+
+### 4. Grab Attention with Your First Sentence
+- Your opening sentence determines if people keep reading
+- Rewrite it multiple times until it creates curiosity
+- Make it specific and compelling
+- Avoid generic openings
+
+### 5. Write Short Sentences
+- Avoid putting multiple thoughts in one sentence
+- Readers aren't as smart as you think
+- Break complex ideas into digestible pieces
+- Each sentence should serve one purpose
+
+### 6. Choose Impactful Words
+- For business writing: choose clarity over cleverness
+- For engaging content: choose vivid over bland ("swill" vs "drink")
+- Remove hedge words ("I think", "maybe", "perhaps")
+- Use concrete nouns and strong verbs
+
+## Implementation Checklist
+
+Before publishing any content, verify:
+
+- [ ] **Simplicity**: Can a 12-year-old understand this?
+- [ ] **Word Count**: Have I removed every unnecessary word?
+- [ ] **Structure**: Person before action in each sentence?
+- [ ] **Hook**: Does my first sentence create curiosity?
+- [ ] **Length**: Are my sentences short and punchy?
+- [ ] **Impact**: Do my word choices drive the message forward?
+
+## Common Words to Eliminate
+
+- very, really, quite, rather, somewhat
+- I think, I believe, maybe, perhaps
+- actually, basically, literally (unless literally literal)
+- in order to (use "to")
+- due to the fact that (use "because")
+
+## Forbidden Punctuation and Words
+
+### Never Use:
+- Emojis of any kind.
+- **Hyphens (-)** in any context - restructure sentences instead
+- **Em dashes (—)** - use commas, periods, or restructure
+- **The word "like"** - replace with alternatives:
+  - "such as" instead of "like"
+  - "including" instead of "like" 
+  - "for example" instead of "like"
+  - "similar to" instead of "like"
+  - Or restructure the sentence entirely
+
+### Examples of Fixes:
+**Wrong**: "Tools like v0 and n8n—they're game-changers for automation-focused entrepreneurs."
+
+**Right**: "Tools such as v0 and n8n are game changers for automation focused entrepreneurs."
+
+**Wrong**: "I was like, wow, this is amazing—people really get it!"
+
+**Right**: "I thought, wow, this is amazing. People really get it!"
+
+## Before/After Examples
+
+**Before**: "I was really very excited and actually quite blown away by how the participants were genuinely engaged during the workshop."
+
+**After**: "The participants' engagement blew me away."
+
+**Before**: "The tools that we demonstrated have the capability to potentially automate various different business processes."
+
+**After**: "These tools automate business processes."
+
+## Application Areas
+
+Use these principles for:
+- Social media posts (Twitter/LinkedIn)
+- Blog content and articles
+- Email campaigns
+- Website copy
+- Documentation
+- Marketing materials
+- Community announcements
+
+## Remember
+Simple, clear, persuasive writing wins every time.

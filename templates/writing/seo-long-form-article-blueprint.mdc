@@ -1,0 +1,301 @@
+---
+description: Complete blueprint for creating high-converting, SEO-optimized articles using systematic research and structured writing methodology
+globs: ["**/*.md", "content/**/*", "blog/**/*", "articles/**/*"]
+alwaysApply: false
+---
+
+# Article Creation Blueprint: The Systematic Method
+
+## Overview
+This blueprint provides a systematic approach for creating high-converting, SEO-optimized articles that drive traffic and conversions. Use this framework for any article topic.
+
+## Core Principles
+
+### 1. Always Start with the End Goal
+- **Primary Objective:** Drive conversions to your primary offer
+- **Secondary Objectives:** Build authority, provide genuine value, rank on Google
+- **Success Metric:** Clear conversion tracking per article
+
+### 2. Audience-First Approach
+Define your specific avatar before writing:
+- Who are they? (job, age, situation)
+- What's their biggest pain point?
+- What outcome do they desperately want?
+- What's stopping them from achieving it?
+
+## Phase 1: Strategic Research (30-45 minutes)
+
+### Keyword Research Protocol
+
+**Research Framework:**
+1. Start with 5 keyword angles:
+   - [Main topic] + "tutorial"
+   - "How to [achieve outcome] with AI"
+   - "[Problem] solution for [audience]"
+   - "AI [tool/method] for beginners"
+   - "[Outcome] without [common obstacle]"
+
+2. Evaluation Criteria:
+   - Search volume: 100-50,000 (sweet spot: 1,000-10,000)
+   - Competition: LOW to MEDIUM only
+   - Intent: Informational or Commercial
+   - Relevance: Direct connection to your offer
+
+### Statistical Research Protocol
+
+**Research Requirements:**
+- Find 3-5 credible statistics that support your argument
+- Focus on: cost savings, time savings, success rates, industry trends
+- **ALWAYS provide source links in the article**
+- Prioritize data from 2024-2025
+
+**Example Search Patterns:**
+- "[Topic] ROI statistics [current year]"
+- "[Industry] digital transformation data"
+- "[Tool category] vs traditional methods study"
+- "Small business [topic] challenges statistics"
+
+## Phase 2: Structured Interview Process
+
+### Interview Framework
+**Purpose:** Extract authentic stories and specific details that create connection
+
+**Question Categories:**
+
+1. **Context Discovery**
+   - What's the scope? (word count, depth, format)
+   - Who exactly is reading this?
+   - What action should they take after reading?
+
+2. **Personal Story Mining**
+   - What was life like before discovering this solution?
+   - What specific moment made you realize things could be different?
+   - What surprised you most about the results?
+   - What would you tell your past self?
+
+3. **Method Documentation**
+   - Walk me through your exact process
+   - What tools/resources did you use?
+   - What mistakes did you make initially?
+   - What would you do differently?
+
+4. **Results & Transformation**
+   - What specific results did you achieve?
+   - How long did it take?
+   - What changed in your business/life?
+   - What's possible now that wasn't before?
+
+### Interview Best Practices
+- Ask follow-up questions for specificity
+- Get exact numbers, not generalizations
+- Capture emotional moments
+- Document word-for-word quotes
+
+## Phase 3: Content Structure Framework
+
+### Universal Article Template
+
+```markdown
+# [Outcome-Focused Headline with Number/Timeframe]
+
+*[Hook that addresses pain point + promises transformation]*
+
+---
+
+## The [Industry/Niche] Problem
+
+[3-4 short paragraphs establishing:]
+- Current painful reality
+- Why traditional solutions fail
+- Personal connection to the problem
+- Credible statistic with source
+
+---
+
+## The Discovery
+
+[2-3 paragraphs covering:]
+- Moment of realization
+- What made this different
+- Why it works when others don't
+- Shift in perspective
+
+---
+
+## Case Study: [Specific Example]
+
+[Detailed walkthrough including:]
+- The challenge
+- The approach
+- The process (step-by-step)
+- The results (with numbers)
+- What surprised you
+
+---
+
+## The [Method Name] Framework
+
+[Actionable steps readers can follow:]
+- Phase 1: [Foundation]
+- Phase 2: [Implementation]
+- Phase 3: [Optimization]
+- Phase 4: [Scaling]
+
+[Include templates, prompts, examples]
+
+---
+
+## Why This Works
+
+[Comparison table or list:]
+- Traditional way vs. New way
+- Time investment comparison
+- Cost comparison
+- Results comparison
+- Effort required
+
+---
+
+## The Real Impact
+
+[Deeper meaning beyond tactics:]
+- What this enables
+- Barriers it removes
+- Future it creates
+- Who it helps
+
+---
+
+## Your Next Step
+
+[Soft transition to your offer:]
+- Acknowledge common reader behavior
+- Create urgency without pressure
+- Natural bridge to your value
+- Clear, single call-to-action
+
+[Your offer pitch]
+
+---
+
+*P.S. [Additional proof point or urgency]*
+```
+
+## Phase 4: Writing Guidelines
+
+### Voice & Tone Principles
+
+1. **Conversational Authority**
+   - Write like you're helping a friend
+   - Use "I" and "you" naturally
+   - Share failures alongside successes
+
+2. **Specificity Rules**
+   - Numbers over adjectives
+   - Exact timeframes, not "quickly"
+   - Real examples, not hypotheticals
+   - Actual costs, not "affordable"
+
+3. **Engagement Techniques**
+   - Short sentences after long ones
+   - Single-line power statements
+   - Questions that create reflection
+   - Pattern interrupts with "But here's the thing..."
+
+### SEO Integration Checklist
+
+**Keyword Placement:**
+- [ ] Primary keyword in title
+- [ ] Primary keyword in first 100 words
+- [ ] 2-3 variations per major section
+- [ ] Long-tail keywords in subheadings
+- [ ] Natural density: 1-2%
+
+**Technical Optimization:**
+- [ ] Title: 50-60 characters
+- [ ] Meta description: 150-160 characters
+- [ ] Headers: H2 and H3 hierarchy
+- [ ] Internal link to your offer page
+- [ ] External links to sources
+
+## Phase 5: Conversion Integration Strategy
+
+### The Value-First Method
+**Principle:** Teach everything, then offer the implementation environment
+
+**Integration Points:**
+1. **Never** in the first half of article
+2. **Optional** soft mention in case study
+3. **Primary** mention in final section
+4. **Natural** transition from value to offer
+
+**Transition Templates:**
+- "But knowing and doing are different things..."
+- "The framework works, but most people need..."
+- "If you're ready to stop learning and start building..."
+- "The people who succeed aren't just reading..."
+
+## Phase 6: Quality Control
+
+### Pre-Publishing Checklist
+
+**Content Quality:**
+- [ ] Addresses specific avatar pain point
+- [ ] Includes personal transformation story
+- [ ] Provides actionable framework
+- [ ] Shows concrete results/proof
+- [ ] Flows naturally to offer CTA
+
+**Technical Quality:**
+- [ ] 1,200-1,500 words (unless specified otherwise)
+- [ ] All statistics have source links
+- [ ] Mobile-friendly formatting
+- [ ] No spelling/grammar errors
+- [ ] Offer link works
+
+**Conversion Elements:**
+- [ ] Compelling hook
+- [ ] Authority indicators
+- [ ] Social proof
+- [ ] Urgency (subtle)
+- [ ] Clear next step
+
+## Success Metrics
+
+### Track These KPIs
+1. **Immediate:** Click-through to offer page
+2. **Short-term:** Conversions (target: 2+)
+3. **Medium-term:** SEO rankings (target: page 1 in 30 days)
+4. **Long-term:** Article shares and backlinks
+
+### Iteration Protocol
+- A/B test headlines after 2 weeks
+- Update statistics quarterly
+- Refresh examples every 6 months
+- Monitor conversion rate monthly
+
+## Templates Library
+
+### Headline Formulas
+- How to [Achieve Desired Outcome] in [Specific Timeframe] (Even If [Common Objection])
+- The [Surprising Method] That [Specific Result] Without [Common Pain Point]
+- [Number] [Tool/Method] Secrets That [Desirable Outcome]
+- Stop [Common Mistake]. Here's How I [Achieved Result] Instead
+
+### Hook Templates
+- "Most [audience] struggle with [problem]. Here's what changed everything for me..."
+- "I spent [time] trying to [goal] until I discovered [solution]..."
+- "Everyone tells you to [common advice]. But that's exactly why [problem persists]..."
+
+### CTA Templates
+- "Ready to implement what you've learned? [Your offer] is where [audience] turn knowledge into results..."
+- "The [method] works. The question is: will you use it? Inside [Your offer]..."
+- "You now have the blueprint. [Your offer] is where we build together..."
+
+## Final Notes
+
+1. **Quality > Quantity**: One great article beats ten mediocre ones
+2. **Story > Information**: People connect with transformation, not just tactics
+3. **Proof > Claims**: Always show, don't just tell
+4. **Environment > Course**: Position as community, not just education
+5. **Action > Perfection**: Ship consistently, improve iteratively

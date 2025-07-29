@@ -10,7 +10,8 @@
       "Bash(gh repo create:*)",
       "Bash(git push:*)",
       "Bash(git branch:*)",
-      "Bash(gh repo edit:*)"
+      "Bash(gh repo edit:*)",
+      "Bash(npm publish:*)"
     ],
     "deny": []
   }

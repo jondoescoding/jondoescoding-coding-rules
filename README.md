@@ -42,7 +42,7 @@ npx jondoescoding-cursor-rules typescript
 npx jondoescoding-cursor-rules typescript react nodejs
 
 # Install nested templates
-npx jondoescoding-cursor-rules python/llm/observability/langfuse
+npx jondoescoding-cursor-rules python/llm/observability/langfuse writing/scott-adams-writing-principles
 
 # Install all available templates
 npx jondoescoding-cursor-rules --all
@@ -69,6 +69,15 @@ jondoescoding-cursor-rules --help
 |----------|-------------|------------|
 | `python/llm/observability/langfuse` | Complete LangFuse tracing setup for FastAPI + LangChain/LangGraph | `**/*.py`, `src/**/*`, `api/**/*` |
 
+### Writing Templates
+| Template | Description | File Types |
+|----------|-------------|------------|
+| `writing/content-curation-rule` | Viral content formats for Twitter and LinkedIn | `**/*.md`, `**/*.txt` |
+| `writing/scott-adams-writing-principles` | Clear, persuasive writing principles from Scott Adams | `**/*.md`, `**/*.txt`, `content/**/*` |
+| `writing/seo-long-form-article-blueprint` | Complete blueprint for high-converting SEO articles | `**/*.md`, `content/**/*`, `blog/**/*` |
+| `writing/tweet-interview-process` | Systematic approach for creating viral, conversion-focused tweets | `**/*.md`, `social/**/*`, `content/**/*` |
+| `writing/twitter-thread-creation` | Step-by-step guide for creating viral Twitter threads | `**/*.md`, `social/**/*`, `twitter/**/*` |
+
 ### Template Details
 
 Each template includes:
@@ -88,10 +97,16 @@ jondoescoding-cursor-rules/
 │   ├── typescript.mdc      # TypeScript rules
 │   ├── react.mdc          # React rules
 │   ├── nodejs.mdc         # Node.js rules
-│   └── python/            # Python-specific templates
-│       └── llm/           # LLM development templates
-│           └── observability/
-│               └── langfuse.mdc  # LangFuse tracing guide
+│   ├── python/            # Python-specific templates
+│   │   └── llm/           # LLM development templates
+│   │       └── observability/
+│   │           └── langfuse.mdc  # LangFuse tracing guide
+│   └── writing/           # Content creation templates
+│       ├── content-curation-rule.mdc
+│       ├── scott-adams-writing-principles.mdc
+│       ├── seo-long-form-article-blueprint.mdc
+│       ├── tweet-interview-process.mdc
+│       └── twitter-thread-creation.mdc
 ├── package.json           # Package configuration
 └── README.md             # This file
 ```

@@ -1,0 +1,254 @@
+---
+description: Systematic approach for creating viral Twitter threads using AI assistance and human oversight
+globs: ["**/*.md", "**/*.txt", "social/**/*", "twitter/**/*"]
+alwaysApply: false
+---
+
+# AI Content Creator's Guide for Viral Twitter Threads
+
+## Overview
+This guide helps you systematically prompt AI to create high-performing Twitter threads that consistently get 100+ likes. Built for content creators using a human-in-the-loop approach.
+
+---
+
+## Step 1: Topic Ideation Prompt
+
+### Initial Prompt Template:
+```
+I'm a content creator looking to create viral Twitter threads. 
+
+Generate 10 thread topics that would appeal to:
+- [Your target audience 1]
+- [Your target audience 2] 
+- [Your target audience 3]
+- [Your target audience 4]
+
+Topics should be:
+- Timely and relevant
+- Personally relatable
+- Educational but accessible
+- Controversy-free but engaging
+
+Format as: "Topic: [Brief description] - Hook potential: [1-10]"
+```
+
+### Human Review Step:
+- Pick the topic with highest hook potential that you're genuinely excited about
+- Consider your recent experiences or learnings you can add personal insight to
+
+---
+
+## Step 2: Thread Structure Planning
+
+### Structure Prompt Template:
+```
+Help me plan a Twitter thread about: [CHOSEN TOPIC]
+
+Create an outline with:
+1. Hook tweet (with 3 variations to test)
+2. Preview tweet (what readers will learn)
+3. 5-8 main content tweets (one key point each)
+4. Personal insight tweet (story/experience)
+5. Call-to-action tweet
+
+For each tweet, include:
+- Main message
+- Suggested formatting (bullets, emojis, line breaks)
+- Engagement elements (questions, relatable moments)
+
+Target thread length: 7-10 tweets total
+Tone: Conversational, helpful, authentic
+```
+
+### Human Review Step:
+- Ensure the flow tells a complete story
+- Verify you have personal experiences to share for the insight tweet
+- Adjust length if needed (shorter often performs better)
+
+---
+
+## Step 3: Hook Optimization
+
+### Hook Refinement Prompt:
+```
+I need to perfect the hook for my Twitter thread about: [TOPIC]
+
+Current hook options:
+[PASTE THE 3 VARIATIONS FROM STEP 2]
+
+Create 5 additional hook variations that:
+- Start with curiosity/intrigue
+- Include numbers or specific outcomes when possible
+- Promise clear value
+- Use power words (without being clickbait-y)
+- Are under 280 characters
+
+Also suggest an eye-catching visual idea for the first tweet.
+```
+
+### Human Review Step:
+- Test hooks with friends or your community
+- Choose the one that makes YOU most excited to read the thread
+- Prepare or source the visual element
+
+---
+
+## Step 4: Content Development
+
+### Content Writing Prompt:
+```
+Write the full Twitter thread using this structure: [PASTE STRUCTURE FROM STEP 2]
+
+Use the chosen hook: [PASTE SELECTED HOOK]
+
+Writing guidelines:
+- Each tweet: 1 clear idea, easy to scan
+- Use short sentences and line breaks
+- Include relevant emojis (sparingly)
+- Add bullet points where helpful
+- Keep conversational tone
+- Include specific examples/numbers when possible
+- Make it actionable
+
+For the personal insight tweet, leave a placeholder: [PERSONAL STORY NEEDED]
+
+End with a clear CTA that encourages follows and engagement.
+```
+
+### Human Review Step:
+- Read the entire thread out loud - does it flow?
+- Replace [PERSONAL STORY NEEDED] with your actual experience
+- Ensure each tweet adds unique value
+- Check that technical terms are explained simply
+
+---
+
+## Step 5: Polish & Optimization
+
+### Final Polish Prompt:
+```
+Review this Twitter thread draft and optimize for maximum engagement:
+
+[PASTE FULL THREAD]
+
+Please:
+1. Enhance readability (formatting, spacing, flow)
+2. Strengthen weak tweets
+3. Ensure consistent voice throughout
+4. Optimize for mobile reading
+5. Add engagement hooks (questions, relatable moments)
+6. Verify the CTA is compelling
+7. Suggest ideal posting time for your content
+
+Provide the final version plus 3 specific tips for this thread's success.
+```
+
+### Human Review Step:
+- Make final personal touches
+- Ensure authenticity isn't lost in optimization
+- Double-check all facts and claims
+
+---
+
+## Step 6: Pre-Launch Checklist
+
+### Quality Assurance Prompt:
+```
+Perform a final check on this Twitter thread:
+
+[PASTE FINAL VERSION]
+
+Check for:
+- Grammar and spelling
+- Character limits per tweet
+- Logical flow between tweets
+- Clear value proposition
+- Strong hook and CTA
+- Mobile-friendly formatting
+- Potential misunderstandings
+
+Rate each element 1-10 and suggest improvements for anything under 8.
+```
+
+### Human Actions:
+- [ ] Schedule for optimal posting time
+- [ ] Prepare follow-up engagement responses
+- [ ] Set reminder to engage with early commenters
+- [ ] Have next thread topic ready for momentum
+
+---
+
+## Success Tracking Template
+
+After posting, measure:
+- Likes on first tweet (target: 100+)
+- Thread completion rate
+- New followers gained
+- Quality of comments/discussions
+- Shares/bookmarks
+
+Use these insights to refine your next prompting session.
+
+---
+
+## Pro Tips for Better Results
+
+1. **Personal Stories Win**: Always include a genuine personal experience
+2. **Visual Elements**: First tweet with image/GIF performs 2x better
+3. **Timing Matters**: Post when your audience is most active
+4. **Engage Early**: Reply to comments within first hour
+5. **Thread Continuation**: End with a question to encourage discussion
+
+---
+
+## Emergency Backup Prompts
+
+If a thread isn't performing after 2 hours:
+
+### Rescue Prompt:
+```
+This Twitter thread isn't gaining traction as expected:
+[PASTE THREAD LINK]
+
+Suggest:
+1. A follow-up tweet to boost visibility
+2. Ways to repurpose the content
+3. Lessons for the next thread
+4. Community engagement strategies to try now
+```
+
+Remember: Not every thread will go viral, but consistent quality content builds your audience over time!
+
+---
+
+## Copy-Paste Quick Reference
+
+### 🚀 Ideation Prompt:
+```
+I'm a content creator looking to create viral Twitter threads. Generate 10 thread topics that would appeal to: [your audiences]. Topics should be timely, personally relatable, educational but accessible, and controversy-free but engaging. Format as: "Topic: [Brief description] - Hook potential: [1-10]"
+```
+
+### 📋 Structure Prompt:
+```
+Help me plan a Twitter thread about: [CHOSEN TOPIC]. Create an outline with: 1) Hook tweet (with 3 variations), 2) Preview tweet, 3) 5-8 main content tweets, 4) Personal insight tweet, 5) CTA tweet. For each, include main message, formatting suggestions, and engagement elements. Target: 7-10 tweets, conversational tone.
+```
+
+### 🎯 Hook Optimization Prompt:
+```
+Perfect the hook for my Twitter thread about: [TOPIC]. Current options: [PASTE OPTIONS]. Create 5 additional variations that start with curiosity, include numbers when possible, promise clear value, use power words (not clickbait), under 280 characters. Also suggest a visual idea.
+```
+
+### ✍️ Content Writing Prompt:
+```
+Write the full Twitter thread using this structure: [PASTE STRUCTURE]. Use this hook: [PASTE HOOK]. Guidelines: 1 idea per tweet, short sentences, line breaks, minimal emojis, bullets when helpful, conversational tone, specific examples, actionable content. Use [PERSONAL STORY NEEDED] placeholder. End with clear CTA.
+```
+
+### ✨ Polish Prompt:
+```
+Optimize this Twitter thread for maximum engagement: [PASTE THREAD]. Enhance readability, strengthen weak tweets, ensure consistent voice, optimize for mobile, add engagement hooks, verify compelling CTA, suggest posting time. Provide final version plus 3 success tips.
+```
+
+### ✅ Final Check Prompt:
+```
+Final check on this Twitter thread: [PASTE FINAL]. Check: grammar/spelling, character limits, logical flow, clear value, strong hook/CTA, mobile formatting, potential misunderstandings. Rate each element 1-10, suggest improvements for anything under 8.
+```

@@ -1,0 +1,151 @@
+---
+description: Useful for making content for Twitter and Linkedin based on what goes viral (Formats to use when generating content for social media)
+globs: ["**/*.md", "**/*.txt"]
+alwaysApply: false
+---
+
+# A Few Ways To Go Viral On X 
+
+- Formats to use when generating content for social media
+
+# General post style
+- Mega thread → end with ":" or "🧵"
+- Hype short sentence + image(s)
+- Bullet list 🆕
+
+## Examples
+
+- The Time Has Come for Robots.
+I build Al Agents to replace office workers, but these demos convince me! All physical labor will be gone to robots, too. (even the world's oldest profession).
+Just watch it if you disagree. The biggest robot thread ever (50 demos):
+- OMG 03 is insane. No one is safe lol.
+- How I've been using Al:
+    - Choose a task
+    - Find YT expert that teaches it
+    - Have Al summarize their video
+    - Add examples / context
+    - Have Al turn that into a meta prompt - Test, refine, and reuse that prompt
+    This has led to the best results in almost everything I have Al do.
+
+# Megathread
+
+- Provocative/alarmist hook +
+- Dangling a huge payoff
+- Promises scale and exclusivity
+- Optional: dare end
+- Optional: be more trustworthy by questioning things
+
+## Examples
+
+- BREAKING: This startup just dropped the fastest way to build Al agents.
+
+This Figma-like canvas to build agents will blow your mind.
+
+Here's why this is the best tool for building Al agents:
+- I've tried all the Browser-Use tools | could find (from Claude, OpenAl, Convergence, Deepseek, Google and more).
+Some are incredible; others are pure marketing overhype.
+The review & demos:
+
+# Prompt Engineer
+
+Perform the same task with different AI models.
+
+- make megathread with demos
+- the more time consuming the better :D
+
+## Examples
+
+ChatGPT 03 vs Gemini 2.5 Pro
+Same prompts. 
+Wildly different results. 
+I've included videos to prove it:
+THREAD: 
+
+4 Al's. One prompt.
+Who did it best?
+Prompt and results in thread:
+
+# Teacher
+
+Teach something trendy that takes time to learn.
+
+- Sensationalist hook +
+- Share something actually useful
+- End with huge payoff
+- Optionally combine with Bullet List (see below)
+
+## Examples
+
+### Number 1
+
+I can't stop making voxel icons in ChatGPT 4o.
+
+Here's how I do it (includes prompt and reference photo):
+
+(image)
+
+### Number 2
+
+holy shit GPT-4o image gen is unreal. 
+it can generate Uls too
+designers are not safe.
+11 examples:
+
+(image)
+
+# "Literally"
+
+Use the word "literally". 
+
+## Example
+
+### Number 1
+
+OpenAl literally dropped a 32-page masterclass on building Al agents
+
+# The Lazy Inquirer
+
+Ask question relevant to large community.
+
+## Example
+
+### Number 1
+
+How do you guys deal with burn out?
+My productivity has gone to 0, I just feel tired all day without even doing anything!
+
+### Number 2
+
+What are you building with Next.js?
+
+# Deluge
+
+Claim seemingly plausible things that are not actually possible.
+
+## Example
+
+- Calendly ($400/mo)
+- Trainual ($299/mo)
+- Typeform ($150/month)
+- All tools we can now build internally with ~15 hours of dev time each with Lovable or Replit.
+
+$10,000/year in software expenses back to our bottom line.
+Crazy shift happening right now.
+
+# Dark Gray Mirror
+
+Share dystopian but technically possible AI idea
+
+## Example
+
+### Number 1
+
+I want an Al voice assistant that can interact with my email and calendar.
+It would let me catch up on admin during my 15 minute drive to work before the day really starts.
+Has anyone built this yet? Otherwise, I'm tempted to vibe code it.
+
+### Number 2
+
+shower thought why is no one doing outbound for pizza
+
+"Hey this Gigi from Gigis Pizzas calling. You ordered last week. We have a Pepperoni Pizza ready and could deliver it in 10 minutes. You hungry?"

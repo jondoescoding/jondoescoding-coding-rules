@@ -1,0 +1,162 @@
+---
+description: Systematic interview approach for creating viral, conversion-focused tweets and short-form content
+globs: ["**/*.md", "**/*.txt", "social/**/*", "content/**/*"]
+alwaysApply: false
+---
+
+# Tweet & Short-Form Content Interview Process
+
+This rule outlines the systematic interview approach for creating viral, conversion-focused tweets and short-form content that aligns with the user's goals and audience.
+
+## Core Philosophy
+
+**Never assume what the user wants.** Every piece of content should be strategically crafted through systematic questioning that reveals:
+- True objectives (not surface-level goals)
+- Audience psychology and pain points
+- Authentic voice and positioning
+- Optimal conversion pathways
+
+## 3-Stage Interview Framework
+
+### Stage 1: Content Strategy Foundation (6 Core Questions)
+
+**Purpose**: Establish the strategic foundation before any writing begins.
+
+1. **Primary Goal**: What's the main action you want people to take after seeing this content?
+   - Engage with the content (likes/retweets/shares)?
+   - Click to see more of your work?
+   - Join a waitlist/community?
+   - Purchase a product/service?
+   - All of the above?
+
+2. **Audience Focus**: Who specifically are you trying to reach?
+   - Entrepreneurs who need [specific solution]?
+   - Developers interested in [specific technology]?
+   - People who think [specific belief/assumption]?
+   - General audience impressed by [specific results]?
+
+3. **Key Message**: What's the ONE thing you want people to remember?
+   - How fast you achieved something?
+   - That [common belief] is wrong?
+   - That [difficult thing] is accessible to everyone?
+   - The power of [specific method/tool]?
+
+4. **Tone**: How do you want to come across?
+   - Helpful teacher sharing knowledge?
+   - Confident expert showing results?
+   - Relatable person who figured it out?
+   - Inspiring leader showing what's possible?
+
+5. **Hook Strategy**: What should grab attention first?
+   - The time it took (X minutes/hours)?
+   - The visual result (amazing outcome)?
+   - The contrast (expectation vs reality)?
+   - A bold claim about [topic]?
+
+6. **CTA Integration**: How prominent should your call-to-action be?
+   - Subtle mention that flows naturally?
+   - Strong focus as the main CTA?
+   - Brief teaser that creates curiosity?
+   - No CTA, pure value/engagement play?
+
+### Stage 2: Execution Refinement (5 Tactical Questions)
+
+**Purpose**: Refine the execution based on Stage 1 answers to ensure authentic voice and optimal impact.
+
+1. **Opening Hook**: How should the content begin?
+   - Reference a specific visual/result?
+   - Start with a relatable struggle?
+   - Open with a contrarian statement?
+   - Dive straight into the story?
+
+2. **Relatability Angle**: What's the most relatable struggle for your audience?
+   - "I used to think [common misconception]"
+   - "I avoided [activity] because [fear/limitation]"
+   - "I used to [expensive/time-consuming approach]"
+   - "I thought you needed [perceived requirement]"
+
+3. **Core Message Delivery**: How should the key insight be framed?
+   - Focus on the tools being simple?
+   - Emphasize it's about [skill/mindset], not [perceived requirement]?
+   - Show the contrast between perception vs reality?
+   - Highlight the speed/ease of the process?
+
+4. **Proof/Credibility**: What evidence supports your message?
+   - Specific metrics (time, cost, results)?
+   - Before/after comparison?
+   - Technical details that show expertise?
+   - Personal transformation story?
+
+5. **CTA Flow**: How should the call-to-action integrate naturally?
+   - Mention you're building something for people like them?
+   - Reference creating a space for others figuring this out?
+   - Keep it brief as just a "launching soon" mention?
+   - Position as exclusive early access?
+
+### Stage 3: Format & Optimization (3 Final Questions)
+
+**Purpose**: Optimize format and final execution details for maximum impact.
+
+1. **Length Preference**: What format works best for this message?
+   - Single tweet (280 characters max)?
+   - Short thread (2-3 tweets)?
+   - Medium thread (4-5 tweets)?
+   - Long-form post adapted for platform?
+
+2. **Visual Integration**: How should visual elements be referenced?
+   - Direct description of what's shown?
+   - Teaser that creates curiosity?
+   - Technical details about creation process?
+   - Emotional impact of the visual?
+
+3. **Engagement Optimization**: What will encourage interaction?
+   - Question that invites responses?
+   - Controversial statement that sparks debate?
+   - Call for people to share their experiences?
+   - Promise of follow-up content/thread?
+
+## Implementation Guidelines
+
+### Question Flow Rules
+- **Always ask Stage 1 questions first** - Never skip to execution without strategy
+- **Wait for complete answers** before moving to Stage 2
+- **Adapt questions based on responses** - Don't robotically ask every question if some are already answered
+- **Dig deeper on vague answers** - "Entrepreneurs" is too broad, "Entrepreneurs who think good design requires years of training" is specific
+
+### Content Creation Principles
+- **Lead with relatability** - Start with struggles the audience faces
+- **Provide clear transformation** - Show the before/after journey
+- **Include specific proof** - Vague claims don't convert
+- **End with natural CTA** - Should feel like helping, not selling
+- **Match authentic voice** - Use the user's communication style and personality
+
+### Common Pitfalls to Avoid
+- Creating content before understanding the goal
+- Assuming you know the audience without asking
+- Using generic hooks that don't match the user's voice
+- Making CTAs feel forced or salesy
+- Focusing on features instead of transformation/outcome
+
+## Success Metrics
+
+A successful interview should result in content that:
+- Clearly serves the stated primary goal
+- Resonates with the specific target audience
+- Delivers the key message memorably
+- Maintains authentic voice and positioning
+- Includes natural, conversion-focused CTA
+- Optimizes for the chosen platform/format
+
+## Best Practices
+
+### Voice Matching
+- Mirror the user's communication style
+- Use their preferred terminology
+- Match their level of technical detail
+- Reflect their personality (casual vs professional)
+
+### Platform Optimization
+- **Twitter**: Focus on hooks and engagement
+- **LinkedIn**: Professional tone with value-first approach
+- **Threads**: Storytelling with natural breaks
+- **General**: Adapt format to platform culture
