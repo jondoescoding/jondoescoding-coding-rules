@@ -1,4 +1,4 @@
-# 🎯 JonDoesCoding Cursor Rules CLI
+# 🎯 jondoescoding Rules CLI
 
 > A powerful CLI tool to manage and distribute custom Cursor AI rule templates for enhanced AI-assisted development.
 
