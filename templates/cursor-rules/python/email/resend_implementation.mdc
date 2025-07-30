@@ -1,0 +1,849 @@
+---
+description: Complete guide for implementing Resend email functionality in any system, with beginner-friendly explanations and troubleshooting
+---
+
+# Resend Email Implementation Guide
+
+This rule provides a comprehensive guide for implementing Resend email functionality in any system, designed for developers at all levels.
+
+## 🚀 SETUP: Integration Questions for AI Assistant
+
+**Before implementing Resend email functionality, the AI assistant should ask these key questions to ensure seamless integration:**
+
+### 📋 **Required Information Checklist**
+
+**Ask the user these questions in order:**
+
+1. **"What type of application are you integrating Resend into?"**
+   - FastAPI/Django/Flask web application
+   - Node.js/Express application  
+   - Standalone Python script
+   - Other framework (specify)
+
+2. **"What domain will you be sending emails from?"**
+   - Do you own a custom domain? (e.g., yourcompany.com)
+   - What email address should be the sender? (e.g., alerts@yourcompany.com)
+   - Have you verified this domain in Resend dashboard yet?
+
+3. **"What types of emails will you be sending?"**
+   - Alert/notification emails
+   - Welcome/onboarding emails
+   - Password reset emails
+   - Marketing emails
+   - System status updates
+
+4. **"Who should receive these emails?"**
+   - Admin email addresses for alerts
+   - User email addresses from database
+   - Fixed list of recipients
+   - Dynamic recipient lists
+
+5. **"Do you have a Resend account and API key?"**
+   - Have you signed up at resend.com?
+   - Do you have your API key ready?
+   - Where will you store the API key? (.env file, config service, etc.)
+
+6. **"What's your current project structure?"**
+   - Where should email service files be created?
+   - Do you have existing configuration/settings files?
+   - Are you using environment variables already?
+
+7. **"What level of email customization do you need?"**
+   - Simple text emails
+   - HTML templates with styling
+   - Dynamic content (user names, data, etc.)
+   - Multiple email templates
+
+### 🎯 **AI Assistant Implementation Strategy**
+
+**Based on user answers, the AI should:**
+
+1. **Customize code examples** to match their framework (FastAPI, Django, etc.)
+2. **Adapt file paths** to their project structure
+3. **Configure domain settings** based on their verified domain
+4. **Create appropriate templates** for their email types
+5. **Set up environment variables** matching their configuration style
+6. **Provide testing scripts** tailored to their use case
+
+### 💡 **Example AI Prompt Flow**
+
+```
+AI: "I'll help you integrate Resend email functionality! Let me ask a few questions to customize the implementation for your project:
+
+1. What type of application are you working with? (FastAPI, Django, Node.js, etc.)
+2. Do you have a custom domain for sending emails, or should we use Resend's test domain for now?
+3. What types of emails do you need to send? (alerts, notifications, user emails, etc.)
+4. Where in your project should I create the email service files?
+5. Do you already have a Resend API key, or do you need help getting one?
+
+Based on your answers, I'll create customized code that fits perfectly into your existing project structure!"
+```
+
+### 🔧 **Post-Setup Validation**
+
+**After gathering information, AI should:**
+
+1. **Validate domain ownership** - Remind about domain verification if using custom domain
+2. **Check API key format** - Ensure it starts with 're_'
+3. **Confirm file locations** - Show where files will be created/modified
+4. **Preview integration points** - Explain how email service connects to existing code
+5. **Suggest testing approach** - Recommend starting with simple test email
+
+---
+
+## 📚 BEGINNER'S GUIDE: Understanding Email Components
+
+### 🔑 **What is Resend?**
+**Resend** is an email API service that allows your applications to send transactional and marketing emails programmatically. Think of it as a postal service for your code - you give it a message, recipient, and sender, and it delivers the email.
+
+**Key Concepts:**
+- **API Key**: Your secret password to use Resend's services (like `re_abc123...`)
+- **Domain Verification**: Proving you own a domain (like `yourcompany.com`) before sending emails from it
+- **Transactional Emails**: Automated emails triggered by user actions (password resets, notifications)
+- **Email Templates**: Pre-designed email layouts with placeholders for dynamic content
+
+### 📧 **Email Components Explained**
+- **From Address**: Who the email appears to be from (`alerts@yourcompany.com`)
+- **To Address**: Who receives the email (`user@gmail.com`)
+- **Subject**: The email title that appears in the inbox
+- **HTML Body**: The formatted content of the email (with styling)
+- **Text Body**: Plain text version (fallback for old email clients)
+- **Tags**: Metadata for tracking and analytics
+
+## ✅ DOs and ❌ DON'Ts for New Developers
+
+### 🔧 **Installation & Setup - DOs and DON'Ts**
+
+#### ✅ **DOs:**
+```bash
+# DO: Install Resend properly
+pip install resend
+
+# DO: Store API key in environment variables
+RESEND_API_KEY=re_your_actual_api_key_here
+```
+
+```python
+# DO: Import and configure correctly
+import resend
+import os
+from typing import Dict, List, Optional
+
+# DO: Set API key from environment
+resend.api_key = os.getenv("RESEND_API_KEY")
+```
+
+#### ❌ **DON'Ts:**
+```python
+# DON'T: Hardcode API keys in your code
+resend.api_key = "re_abc123..."  # NEVER DO THIS!
+
+# DON'T: Forget to import required modules
+# Missing: import resend
+
+# DON'T: Use the wrong package name
+import send_email  # Wrong package name
+```
+
+### 🌐 **Domain Configuration - DOs and DON'Ts**
+
+#### ✅ **DOs:**
+```python
+# DO: Use verified domains you own
+from_email = "alerts@yourcompany.com"  # Your verified domain
+
+# DO: Check for unverified domains and provide fallbacks
+def get_verified_from_email(configured_email: str) -> str:
+    """Get a verified email address for sending."""
+    unverified_domains = ["@gmail.com", "@yahoo.com", "@hotmail.com"]
+    
+    if any(domain in configured_email for domain in unverified_domains):
+        # Use your verified domain instead
+        return "alerts@yourcompany.com"
+    
+    return configured_email
+```
+
+#### ❌ **DON'Ts:**
+```python
+# DON'T: Try to send from unverified domains
+from_email = "alerts@gmail.com"  # You don't own Gmail!
+
+# DON'T: Ignore domain verification
+# This will result in 403 errors or delivery failures
+```
+
+**🔍 How to Verify Your Domain:**
+1. Go to [Resend Dashboard](https://resend.com/domains)
+2. Add your domain (e.g., `yourcompany.com`)
+3. Add the required DNS records to your domain provider
+4. Wait for verification (usually 5-10 minutes)
+
+### 📤 **Sending Emails - DOs and DON'Ts**
+
+#### ✅ **DOs:**
+```python
+# DO: Structure email parameters properly
+def send_notification_email(
+    to_email: str, 
+    subject: str, 
+    html_content: str,
+    from_email: str = "alerts@yourcompany.com"
+) -> Dict:
+    """Send a notification email using Resend."""
+    
+    email_params = {
+        "from": from_email,
+        "to": [to_email],  # Always use list format
+        "subject": subject,
+        "html": html_content,
+        "tags": [
+            {"name": "service", "value": "your-app-name"},
+            {"name": "type", "value": "notification"}
+        ]
+    }
+    
+    try:
+        response = resend.Emails.send(email_params)
+        
+        # Handle different response formats
+        if hasattr(response, 'id'):
+            email_id = response.id
+        elif isinstance(response, dict) and 'id' in response:
+            email_id = response['id']
+        else:
+            email_id = str(response)
+            
+        print(f"Email sent successfully! ID: {email_id}")
+        return {"success": True, "email_id": email_id}
+        
+    except Exception as e:
+        print(f"Failed to send email: {e}")
+        return {"success": False, "error": str(e)}
+```
+
+#### ❌ **DON'Ts:**
+```python
+# DON'T: Send to invalid email formats
+to_email = "not-an-email"  # Missing @ symbol
+
+# DON'T: Forget error handling
+response = resend.Emails.send(params)  # No try/catch!
+
+# DON'T: Assume response format
+email_id = response.id  # May fail if response is dict
+
+# DON'T: Send without proper parameters
+params = {"to": "user@email.com"}  # Missing required fields
+```
+
+### 🎨 **HTML Email Templates - DOs and DON'Ts**
+
+#### ✅ **DOs:**
+```python
+# DO: Create structured HTML templates
+def create_alert_email_template(
+    alert_title: str,
+    alert_message: str,
+    alert_details: Dict[str, str]
+) -> str:
+    """Create a professional alert email template."""
+    
+    html_template = f"""
+    <html>
+    <head>
+        <style>
+            body {{ 
+                font-family: Arial, sans-serif; 
+                line-height: 1.6; 
+                color: #333; 
+                max-width: 600px; 
+                margin: 0 auto; 
+            }}
+            .header {{ 
+                background-color: #ff6b6b; 
+                color: white; 
+                padding: 20px; 
+                text-align: center; 
+            }}
+            .content {{ 
+                padding: 20px; 
+                background-color: #f9f9f9; 
+            }}
+            .alert-box {{ 
+                background-color: #fff5f5; 
+                border-left: 4px solid #ff6b6b; 
+                padding: 15px; 
+                margin: 20px 0; 
+            }}
+            .details {{ 
+                background-color: white; 
+                padding: 15px; 
+                border-radius: 5px; 
+                margin: 15px 0; 
+            }}
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <h1>🚨 {alert_title}</h1>
+        </div>
+        
+        <div class="content">
+            <div class="alert-box">
+                <p>{alert_message}</p>
+            </div>
+            
+            <div class="details">
+                <h3>📊 Details</h3>
+    """
+    
+    # Add dynamic details
+    for key, value in alert_details.items():
+        html_template += f"<p><strong>{key}:</strong> {value}</p>\n"
+    
+    html_template += """
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+    
+    return html_template
+```
+
+#### ❌ **DON'Ts:**
+```python
+# DON'T: Create broken HTML
+html_content = "<h1>Alert</h1><p>Something happened"  # Missing closing tags
+
+# DON'T: Forget mobile responsiveness
+# Use max-width and responsive design
+
+# DON'T: Use inline styles everywhere (hard to maintain)
+html_content = '<p style="color:red;font-size:14px;margin:10px;">Text</p>'
+```
+
+## 🔧 IMPLEMENTATION STEPS
+
+### Step 1: Install and Configure
+```bash
+# Install Resend
+pip install resend
+```
+
+### Step 2: Create Configuration File
+```python
+# config.py or settings.py
+import os
+from typing import Optional
+
+class EmailSettings:
+    """Email configuration settings."""
+    
+    def __init__(self):
+        self.RESEND_API_KEY: str = os.getenv("RESEND_API_KEY", "")
+        self.FROM_EMAIL: str = os.getenv("FROM_EMAIL", "alerts@yourcompany.com")
+        self.NOTIFICATION_EMAILS: str = os.getenv("NOTIFICATION_EMAILS", "admin@yourcompany.com")
+    
+    def validate(self) -> bool:
+        """Validate email configuration."""
+        if not self.RESEND_API_KEY:
+            print("❌ RESEND_API_KEY not configured")
+            return False
+        
+        if not self.RESEND_API_KEY.startswith("re_"):
+            print("❌ Invalid RESEND_API_KEY format")
+            return False
+            
+        return True
+
+# Global settings instance
+email_settings = EmailSettings()
+```
+
+### Step 3: Create Email Service
+```python
+# email_service.py
+import resend
+from typing import Dict, List, Optional
+from datetime import datetime
+
+class EmailService:
+    """Service for sending emails via Resend."""
+    
+    def __init__(self, settings):
+        """Initialize email service with settings."""
+        self.settings = settings
+        resend.api_key = settings.RESEND_API_KEY
+        
+        # Verify domain
+        self.from_email = self._get_verified_from_email(settings.FROM_EMAIL)
+        
+        print(f"📧 Email service initialized")
+        print(f"   From: {self.from_email}")
+        print(f"   API Key: {settings.RESEND_API_KEY[:10]}...")
+    
+    def _get_verified_from_email(self, configured_email: str) -> str:
+        """Get verified from email address."""
+        unverified_domains = ["@gmail.com", "@yahoo.com", "@hotmail.com"]
+        
+        if any(domain in configured_email for domain in unverified_domains):
+            verified_email = "alerts@yourcompany.com"  # Replace with your domain
+            print(f"⚠️  Switching to verified domain: {verified_email}")
+            return verified_email
+        
+        return configured_email
+    
+    async def send_alert_email(
+        self,
+        recipients: List[str],
+        subject: str,
+        alert_type: str,
+        alert_data: Dict[str, str]
+    ) -> Dict[str, any]:
+        """Send an alert email to recipients."""
+        
+        try:
+            # Create HTML content
+            html_content = self._create_alert_template(subject, alert_type, alert_data)
+            
+            # Prepare email parameters
+            email_params = {
+                "from": self.from_email,
+                "to": recipients,
+                "subject": subject,
+                "html": html_content,
+                "tags": [
+                    {"name": "service", "value": "your-app"},
+                    {"name": "alert_type", "value": alert_type},
+                    {"name": "date", "value": datetime.now().strftime('%Y-%m-%d')}
+                ]
+            }
+            
+            # Send email
+            response = resend.Emails.send(email_params)
+            
+            # Handle response
+            if hasattr(response, 'id'):
+                email_id = response.id
+            elif isinstance(response, dict) and 'id' in response:
+                email_id = response['id']
+            else:
+                email_id = str(response)
+            
+            print(f"✅ Alert email sent successfully! ID: {email_id}")
+            return {"success": True, "email_id": email_id}
+            
+        except Exception as e:
+            print(f"❌ Failed to send alert email: {e}")
+            return {"success": False, "error": str(e)}
+    
+    def _create_alert_template(self, subject: str, alert_type: str, data: Dict[str, str]) -> str:
+        """Create HTML template for alert emails."""
+        
+        # Color scheme based on alert type
+        colors = {
+            "error": {"bg": "#ff6b6b", "border": "#ff6b6b"},
+            "warning": {"bg": "#ffa726", "border": "#ffa726"},
+            "info": {"bg": "#42a5f5", "border": "#42a5f5"},
+            "success": {"bg": "#66bb6a", "border": "#66bb6a"}
+        }
+        
+        color = colors.get(alert_type, colors["info"])
+        
+        html_template = f"""
+        <html>
+        <head>
+            <style>
+                body {{ font-family: Arial, sans-serif; line-height: 1.6; color: #333; }}
+                .header {{ background-color: {color['bg']}; color: white; padding: 20px; text-align: center; }}
+                .content {{ padding: 20px; }}
+                .alert-box {{ 
+                    background-color: #f8f9fa; 
+                    border-left: 4px solid {color['border']}; 
+                    padding: 15px; 
+                    margin: 20px 0; 
+                }}
+                .details {{ background-color: #f8f9fa; padding: 15px; border-radius: 5px; }}
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <h1>🚨 {subject}</h1>
+            </div>
+            <div class="content">
+                <div class="alert-box">
+                    <h3>Alert Type: {alert_type.title()}</h3>
+                </div>
+                <div class="details">
+                    <h3>📊 Details</h3>
+        """
+        
+        for key, value in data.items():
+            html_template += f"<p><strong>{key}:</strong> {value}</p>\n"
+        
+        html_template += """
+                </div>
+            </div>
+        </body>
+        </html>
+        """
+        
+        return html_template
+
+# Create global email service
+from config import email_settings
+email_service = EmailService(email_settings)
+```
+
+## 🐛 DEBUGGING GUIDE
+
+### Common Issues and Solutions
+
+#### 1. **403 Authentication Errors**
+```python
+# Debug authentication issues
+def debug_authentication():
+    """Debug Resend authentication problems."""
+    
+    print("🔍 Debugging Resend Authentication")
+    print("=" * 40)
+    
+    # Check API key format
+    api_key = os.getenv("RESEND_API_KEY", "")
+    print(f"API Key: {api_key[:10]}..." if api_key else "❌ No API key found")
+    
+    if not api_key.startswith("re_"):
+        print("❌ Invalid API key format. Should start with 're_'")
+        return False
+    
+    # Test simple email
+    try:
+        test_params = {
+            "from": "onboarding@resend.dev",  # Resend's test domain
+            "to": ["test@example.com"],
+            "subject": "Auth Test",
+            "text": "Testing authentication"
+        }
+        
+        response = resend.Emails.send(test_params)
+        print("✅ Authentication working!")
+        return True
+        
+    except Exception as e:
+        print(f"❌ Authentication failed: {e}")
+        return False
+```
+
+#### 2. **Domain Verification Issues**
+```python
+# Debug domain problems
+def debug_domain_issues(from_email: str):
+    """Debug domain verification problems."""
+    
+    print(f"🔍 Debugging Domain: {from_email}")
+    print("=" * 40)
+    
+    # Check for common unverified domains
+    unverified_domains = ["@gmail.com", "@yahoo.com", "@hotmail.com", "@outlook.com"]
+    
+    if any(domain in from_email for domain in unverified_domains):
+        print(f"❌ {from_email} uses an unverified domain")
+        print("💡 Solutions:")
+        print("   1. Use a domain you own and have verified")
+        print("   2. Verify your domain in Resend dashboard")
+        print("   3. Use Resend's test domain: onboarding@resend.dev")
+        return False
+    
+    print(f"✅ {from_email} appears to use a custom domain")
+    print("💡 Make sure it's verified in your Resend dashboard")
+    return True
+```
+
+#### 3. **Response Format Issues**
+```python
+# Debug response handling
+def safe_get_email_id(response) -> str:
+    """Safely extract email ID from Resend response."""
+    
+    try:
+        # Try different response formats
+        if hasattr(response, 'id'):
+            return response.id
+        elif isinstance(response, dict) and 'id' in response:
+            return response['id']
+        else:
+            print(f"⚠️  Unexpected response format: {type(response)}")
+            return str(response)
+    except Exception as e:
+        print(f"❌ Error extracting email ID: {e}")
+        return "unknown"
+```
+
+### Debugging Test Script
+```python
+# debug_resend.py
+import os
+import resend
+from datetime import datetime
+
+def comprehensive_resend_debug():
+    """Run comprehensive Resend debugging."""
+    
+    print("🔍 Comprehensive Resend Debug")
+    print("=" * 50)
+    
+    # Step 1: Check environment
+    print("\n1️⃣ Environment Check")
+    api_key = os.getenv("RESEND_API_KEY", "")
+    from_email = os.getenv("FROM_EMAIL", "")
+    
+    print(f"   API Key: {'✅ Set' if api_key else '❌ Missing'}")
+    print(f"   From Email: {'✅ Set' if from_email else '❌ Missing'}")
+    
+    if not api_key:
+        print("❌ Set RESEND_API_KEY in your environment")
+        return
+    
+    # Step 2: Test authentication
+    print("\n2️⃣ Authentication Test")
+    resend.api_key = api_key
+    
+    try:
+        # Use Resend's test domain for auth test
+        test_params = {
+            "from": "onboarding@resend.dev",
+            "to": ["delivered@resend.dev"],
+            "subject": "Auth Test",
+            "text": "Testing authentication"
+        }
+        
+        response = resend.Emails.send(test_params)
+        print("✅ Authentication successful")
+        
+    except Exception as e:
+        print(f"❌ Authentication failed: {e}")
+        return
+    
+    # Step 3: Test your domain
+    if from_email:
+        print(f"\n3️⃣ Domain Test ({from_email})")
+        
+        try:
+            domain_test_params = {
+                "from": from_email,
+                "to": ["test@example.com"],  # Replace with your test email
+                "subject": "Domain Test",
+                "text": "Testing your domain"
+            }
+            
+            response = resend.Emails.send(domain_test_params)
+            email_id = safe_get_email_id(response)
+            print(f"✅ Domain test successful! Email ID: {email_id}")
+            
+        except Exception as e:
+            print(f"❌ Domain test failed: {e}")
+            print("💡 Try using onboarding@resend.dev for testing")
+
+if __name__ == "__main__":
+    comprehensive_resend_debug()
+```
+
+## 📁 FILE CREATION AND MODIFICATION GUIDE
+
+### Creating New Files
+
+#### 1. **Email Service File** (`email_service.py`)
+```python
+# Create a new file: email_service.py
+# Copy the EmailService class from Step 3 above
+```
+
+#### 2. **Email Templates File** (`email_templates.py`)
+```python
+# email_templates.py
+from typing import Dict
+from datetime import datetime
+
+class EmailTemplates:
+    """Collection of email templates."""
+    
+    @staticmethod
+    def alert_template(title: str, message: str, details: Dict[str, str]) -> str:
+        """Create alert email template."""
+        # Template code here...
+        pass
+    
+    @staticmethod
+    def welcome_template(user_name: str) -> str:
+        """Create welcome email template."""
+        # Template code here...
+        pass
+```
+
+#### 3. **Test File** (`test_email.py`)
+```python
+# test_email.py
+from email_service import email_service
+
+async def test_email_functionality():
+    """Test email sending functionality."""
+    
+    result = await email_service.send_alert_email(
+        recipients=["test@example.com"],
+        subject="Test Alert",
+        alert_type="info",
+        alert_data={"test": "value"}
+    )
+    
+    if result["success"]:
+        print(f"✅ Test passed! Email ID: {result['email_id']}")
+    else:
+        print(f"❌ Test failed: {result['error']}")
+
+if __name__ == "__main__":
+    import asyncio
+    asyncio.run(test_email_functionality())
+```
+
+### Modifying Existing Files
+
+#### Adding Email to Existing Service
+```python
+# In your existing service file, add:
+from email_service import email_service
+
+class YourExistingService:
+    def __init__(self):
+        self.email_service = email_service
+    
+    async def handle_error(self, error_details: Dict[str, str]):
+        """Handle errors and send notifications."""
+        
+        # Your existing error handling...
+        
+        # Add email notification
+        await self.email_service.send_alert_email(
+            recipients=["admin@yourcompany.com"],
+            subject="System Error Detected",
+            alert_type="error",
+            alert_data=error_details
+        )
+```
+
+#### Adding to FastAPI Endpoints
+```python
+# In your FastAPI router file:
+from fastapi import APIRouter, HTTPException
+from email_service import email_service
+
+router = APIRouter()
+
+@router.post("/api/process")
+async def process_data(data: dict):
+    """Process data and send notifications."""
+    
+    try:
+        # Your processing logic...
+        result = process_your_data(data)
+        
+        # Send success notification
+        await email_service.send_alert_email(
+            recipients=["team@yourcompany.com"],
+            subject="Data Processing Complete",
+            alert_type="success",
+            alert_data={"processed_items": str(len(result))}
+        )
+        
+        return {"status": "success", "result": result}
+        
+    except Exception as e:
+        # Send error notification
+        await email_service.send_alert_email(
+            recipients=["admin@yourcompany.com"],
+            subject="Data Processing Failed",
+            alert_type="error",
+            alert_data={"error": str(e), "data": str(data)}
+        )
+        
+        raise HTTPException(status_code=500, detail=str(e))
+```
+
+## 🔧 ENVIRONMENT CONFIGURATION
+
+### Required Environment Variables
+```bash
+# .env file
+RESEND_API_KEY=re_your_actual_api_key_here
+FROM_EMAIL=alerts@yourcompany.com
+NOTIFICATION_EMAILS=admin@yourcompany.com,team@yourcompany.com
+```
+
+### Configuration Validation
+```python
+# config_validator.py
+def validate_email_config():
+    """Validate email configuration."""
+    
+    required_vars = ["RESEND_API_KEY", "FROM_EMAIL"]
+    missing_vars = []
+    
+    for var in required_vars:
+        if not os.getenv(var):
+            missing_vars.append(var)
+    
+    if missing_vars:
+        print(f"❌ Missing environment variables: {missing_vars}")
+        return False
+    
+    print("✅ All email configuration variables are set")
+    return True
+```
+
+## 🚀 PRODUCTION CONSIDERATIONS
+
+### Error Handling
+```python
+# Always wrap email sending in try-catch
+try:
+    result = await email_service.send_alert_email(...)
+    if not result["success"]:
+        # Log the error but don't crash the application
+        logger.error(f"Email failed: {result['error']}")
+except Exception as e:
+    # Never let email failures crash your main application
+    logger.error(f"Email service error: {e}")
+```
+
+### Rate Limiting
+```python
+# Implement email rate limiting to avoid spam
+from datetime import datetime, timedelta
+from collections import defaultdict
+
+class EmailRateLimiter:
+    def __init__(self, max_emails_per_hour: int = 10):
+        self.max_emails_per_hour = max_emails_per_hour
+        self.email_timestamps = defaultdict(list)
+    
+    def can_send_email(self, email_type: str) -> bool:
+        """Check if we can send this type of email."""
+        now = datetime.now()
+        hour_ago = now - timedelta(hours=1)
+        
+        # Remove old timestamps
+        self.email_timestamps[email_type] = [
+            ts for ts in self.email_timestamps[email_type] 
+            if ts > hour_ago
+        ]
+        
+        # Check if under limit
+        if len(self.email_timestamps[email_type]) < self.max_emails_per_hour:
+            self.email_timestamps[email_type].append(now)
+            return True
+        
+        return False
+```
+
+This comprehensive guide provides everything needed to implement Resend email functionality in any system, with clear explanations for beginners and advanced debugging techniques for experienced developers.
