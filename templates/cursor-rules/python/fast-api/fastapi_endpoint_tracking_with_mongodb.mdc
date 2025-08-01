@@ -1,0 +1,499 @@
+---
+description: Complete guide for implementing FastAPI endpoint tracking with MongoDB storage and analytics
+---
+
+# FastAPI MongoDB Endpoint Tracking Implementation Guide
+
+This rule provides a comprehensive guide for implementing endpoint tracking in FastAPI applications with MongoDB storage, analytics, and performance monitoring.
+
+## 🏗️ Architecture Overview
+
+The tracking system consists of:
+1. **Tracking Service** - Core service that handles MongoDB operations
+2. **Endpoint Integration** - Direct service calls in FastAPI endpoints  
+3. **Analytics Endpoint** - Query and aggregation interface
+4. **MongoDB Storage** - Persistent storage with optimized indexes
+
+## 📁 File Structure
+
+```
+backend/src/
+├── services/
+│   └── endpoint_tracking_service.py  # Core tracking service
+├── api/v0/
+│   ├── your_router.py                # Endpoints with tracking integration
+└── utils/
+    └── config.py                     # MongoDB configuration
+```
+
+## 🔧 Implementation Steps
+
+### Step 1: Configuration Setup
+
+Add MongoDB tracking configuration to [config.py](mdc:backend/src/utils/config.py):
+
+```python
+class Settings(BaseSettings):
+    # MongoDB Configuration (for endpoint tracking)
+    MONGODB_CONNECTION_STRING: str = "your_mongodb_connection_string"
+    MONGODB_DATABASE_NAME: str = "your_database_name"
+    
+    # Endpoint tracking configuration
+    MONGODB_TRACKING_COLLECTION: str = "fastapi_tracking"
+    MONGODB_MAX_POOL_SIZE: int = 100
+    MONGODB_MIN_POOL_SIZE: int = 10
+    MONGODB_MAX_IDLE_TIME_MS: int = 30000
+```
+
+### Step 2: Create Tracking Service
+
+Create [endpoint_tracking_service.py](mdc:backend/src/services/endpoint_tracking_service.py):
+
+```python
+import time
+from datetime import datetime, timezone, timedelta
+from typing import Dict, Any, Optional
+from pymongo import MongoClient
+from fastapi import Request, Response
+import json
+
+from utils.config import get_settings
+from utils.logger import get_logger
+
+logger = get_logger(__name__)
+
+class EndpointTrackingService:
+    """Service for tracking endpoint usage and storing analytics in MongoDB."""
+    
+    def __init__(self):
+        self.settings = get_settings()
+        self._init_database()
+        
+    def _init_database(self):
+        """Initialize MongoDB connection for endpoint tracking"""
+        logger.info("Initializing MongoDB connection for endpoint tracking...")
+        
+        try:
+            self.mongo_client = MongoClient(
+                self.settings.MONGODB_CONNECTION_STRING,
+                maxPoolSize=self.settings.MONGODB_MAX_POOL_SIZE,
+                minPoolSize=self.settings.MONGODB_MIN_POOL_SIZE,
+                maxIdleTimeMS=self.settings.MONGODB_MAX_IDLE_TIME_MS
+            )
+            self.mongo_db = self.mongo_client[self.settings.MONGODB_DATABASE_NAME]
+            self.tracking_collection = self.mongo_db[self.settings.MONGODB_TRACKING_COLLECTION]
+            
+            # Create indexes for better query performance
+            self._create_indexes()
+            
+            logger.info("✅ MongoDB endpoint tracking connection established")
+        except Exception as e:
+            logger.error(f"❌ Failed to connect to MongoDB for endpoint tracking: {e}")
+            raise
+    
+    def _create_indexes(self):
+        """Create indexes for optimized querying"""
+        try:
+            # Check existing indexes first to avoid conflicts
+            existing_indexes = list(self.tracking_collection.list_indexes())
+            existing_index_names = [idx.get('name', '') for idx in existing_indexes]
+            
+            # Index on endpoint and timestamp for time-series queries
+            if 'endpoint_1_timestamp_-1' not in existing_index_names:
+                self.tracking_collection.create_index([
+                    ("endpoint", 1),
+                    ("timestamp", -1)
+                ], name='endpoint_1_timestamp_-1')
+            
+            # Index on status_code for error tracking
+            if 'status_code_1' not in existing_index_names:
+                self.tracking_collection.create_index("status_code", name='status_code_1')
+            
+            # Index on response_time for performance monitoring
+            if 'response_time_1' not in existing_index_names:
+                self.tracking_collection.create_index("response_time", name='response_time_1')
+            
+            logger.info("✅ MongoDB indexes created/verified for endpoint tracking")
+        except Exception as e:
+            logger.warning(f"Failed to create indexes: {e}")
+
+    async def track_request(
+        self,
+        request: Request,
+        response: Response,
+        endpoint_name: str,
+        custom_data: Dict[str, Any],
+        start_time: float
+    ) -> None:
+        """
+        Generic method to track any endpoint request
+        
+        Args:
+            request: FastAPI request object
+            response: FastAPI response object
+            endpoint_name: Name/path of the endpoint
+            custom_data: Endpoint-specific data to track
+            start_time: Request start timestamp
+        """
+        try:
+            end_time = time.time()
+            response_time = end_time - start_time
+            
+            # Base tracking data structure
+            tracking_data = {
+                # Basic request metadata
+                "endpoint": endpoint_name,
+                "method": request.method,
+                "timestamp": datetime.now(timezone.utc),
+                "response_time": response_time,
+                "status_code": response.status_code,
+                
+                # Request details
+                "user_agent": request.headers.get("user-agent"),
+                "client_ip": self._get_client_ip(request),
+                "query_params": dict(request.query_params),
+                
+                # Custom endpoint-specific data
+                "custom_data": custom_data,
+                
+                # Environment info
+                "environment": self.settings.ENVIRONMENT,
+            }
+            
+            # Insert into MongoDB
+            result = self.tracking_collection.insert_one(tracking_data)
+            logger.info(f"📊 Request tracked for {endpoint_name}: {result.inserted_id}")
+            
+        except Exception as e:
+            logger.error(f"Failed to track request for {endpoint_name}: {e}")
+    
+    def _get_client_ip(self, request: Request) -> str:
+        """Extract client IP address from request headers"""
+        # Check for forwarded IP headers (common in production)
+        forwarded_for = request.headers.get("x-forwarded-for")
+        if forwarded_for:
+            return forwarded_for.split(",")[0].strip()
+        
+        real_ip = request.headers.get("x-real-ip")
+        if real_ip:
+            return real_ip
+        
+        # Fallback to direct client IP
+        return getattr(request.client, "host", "unknown")
+
+    async def get_endpoint_analytics(
+        self,
+        endpoint: Optional[str] = None,
+        hours: int = 24
+    ) -> Dict[str, Any]:
+        """
+        Get analytics for tracked endpoints
+        
+        Args:
+            endpoint: Specific endpoint to analyze (optional)
+            hours: Number of hours to look back
+            
+        Returns:
+            Analytics data including request counts, response times, etc.
+        """
+        try:
+            # Calculate time range
+            end_time = datetime.now(timezone.utc)
+            start_time = end_time - timedelta(hours=hours)
+            
+            # Build query
+            query = {
+                "timestamp": {
+                    "$gte": start_time,
+                    "$lte": end_time
+                }
+            }
+            
+            if endpoint:
+                query["endpoint"] = endpoint
+            
+            # Get aggregated data
+            pipeline = [
+                {"$match": query},
+                {"$group": {
+                    "_id": "$endpoint",
+                    "request_count": {"$sum": 1},
+                    "avg_response_time": {"$avg": "$response_time"},
+                    "max_response_time": {"$max": "$response_time"},
+                    "min_response_time": {"$min": "$response_time"},
+                    "error_count": {
+                        "$sum": {
+                            "$cond": [{"$gte": ["$status_code", 400]}, 1, 0]
+                        }
+                    }
+                }}
+            ]
+            
+            results = list(self.tracking_collection.aggregate(pipeline))
+            
+            return {
+                "time_range": {
+                    "start": start_time.isoformat(),
+                    "end": end_time.isoformat(),
+                    "hours": hours
+                },
+                "analytics": results
+            }
+            
+        except Exception as e:
+            logger.error(f"Failed to get endpoint analytics: {e}")
+            return {"error": str(e)}
+
+# Create singleton instance
+endpoint_tracking_service = EndpointTrackingService()
+```
+
+### Step 3: Integrate Tracking in Endpoints
+
+#### For Regular Endpoints:
+
+```python
+from fastapi import APIRouter, Request, Response
+import time
+from services.endpoint_tracking_service import endpoint_tracking_service
+
+@router.post("/your-endpoint")
+async def your_endpoint(
+    request_data: YourRequestModel,
+    fastapi_request: Request,
+    fastapi_response: Response
+):
+    # Start timing for endpoint tracking
+    start_time = time.time()
+    
+    try:
+        # Your endpoint logic here
+        result = await your_service.process(request_data)
+        
+        # Track the request
+        try:
+            await endpoint_tracking_service.track_request(
+                request=fastapi_request,
+                response=fastapi_response,
+                endpoint_name="/api/v0/your-endpoint",
+                custom_data={
+                    "request_size": len(str(request_data.dict())),
+                    "processing_time": result.processing_time,
+                    "custom_field": request_data.some_field
+                },
+                start_time=start_time
+            )
+        except Exception as tracking_error:
+            logger.warning(f"Failed to track request: {tracking_error}")
+        
+        return result
+        
+    except Exception as e:
+        # Handle errors appropriately
+        raise HTTPException(status_code=500, detail=str(e))
+```
+
+#### For Streaming Endpoints:
+
+```python
+from fastapi.responses import StreamingResponse
+
+@router.post("/your-streaming-endpoint")
+async def your_streaming_endpoint(
+    request_data: YourRequestModel,
+    fastapi_request: Request
+):
+    # Start timing for endpoint tracking
+    start_time = time.time()
+    
+    async def generate_stream():
+        # Initialize tracking variables
+        chunk_count = 0
+        total_response_length = 0
+        
+        try:
+            # Your streaming logic here
+            async for chunk in your_streaming_service.process(request_data):
+                # Track metrics
+                chunk_count += 1
+                total_response_length += len(str(chunk))
+                
+                # Yield the chunk
+                yield format_chunk_for_frontend(chunk)
+            
+            # Track the streaming request at the end
+            try:
+                # Create a mock response object for tracking
+                class MockResponse:
+                    status_code = 200
+                
+                await endpoint_tracking_service.track_request(
+                    request=fastapi_request,
+                    response=MockResponse(),
+                    endpoint_name="/api/v0/your-streaming-endpoint",
+                    custom_data={
+                        "chunk_count": chunk_count,
+                        "total_response_length": total_response_length,
+                        "question_length": len(request_data.question)
+                    },
+                    start_time=start_time
+                )
+            except Exception as tracking_error:
+                logger.warning(f"Failed to track streaming request: {tracking_error}")
+                
+        except Exception as e:
+            logger.error(f"Error in streaming response: {str(e)}")
+            yield f"Error: {str(e)}"
+    
+    return StreamingResponse(
+        generate_stream(),
+        media_type="text/plain; charset=utf-8"
+    )
+```
+
+### Step 4: Add Analytics Endpoint
+
+```python
+@router.get("/analytics")
+async def get_endpoint_analytics(
+    endpoint: str = None,
+    hours: int = 24
+) -> Dict[str, Any]:
+    """Get analytics data for tracked endpoints"""
+    try:
+        analytics = await endpoint_tracking_service.get_endpoint_analytics(
+            endpoint=endpoint,
+            hours=hours
+        )
+        
+        return {
+            "success": True,
+            "analytics": analytics,
+            "message": f"Analytics retrieved for last {hours} hours"
+        }
+        
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to retrieve analytics: {str(e)}"
+        )
+```
+
+## 📊 Data Structure Examples
+
+### Tracked Data Structure:
+```json
+{
+  "_id": "ObjectId",
+  "endpoint": "/api/v0/your-endpoint",
+  "method": "POST",
+  "timestamp": "2025-08-01T21:29:02.245Z",
+  "response_time": 6.59,
+  "status_code": 200,
+  "user_agent": "Mozilla/5.0...",
+  "client_ip": "127.0.0.1",
+  "query_params": {},
+  "custom_data": {
+    "request_size": 256,
+    "processing_time": 5.2,
+    "custom_field": "value"
+  },
+  "environment": "DEVELOPMENT"
+}
+```
+
+### Analytics Response Structure:
+```json
+{
+  "success": true,
+  "analytics": {
+    "time_range": {
+      "start": "2025-07-31T21:29:38.096597+00:00",
+      "end": "2025-08-01T21:29:38.096597+00:00",
+      "hours": 24
+    },
+    "analytics": [
+      {
+        "_id": "/api/v0/your-endpoint",
+        "request_count": 15,
+        "avg_response_time": 3.2,
+        "max_response_time": 8.1,
+        "min_response_time": 1.2,
+        "error_count": 0
+      }
+    ]
+  }
+}
+```
+
+## 🔍 Best Practices
+
+### 1. Error Handling
+- Always wrap tracking calls in try-catch blocks
+- Never let tracking failures affect main endpoint functionality
+- Log tracking errors for debugging
+
+### 2. Performance Considerations
+- Use connection pooling for MongoDB
+- Create appropriate indexes for query patterns
+- Consider async operations for tracking calls
+
+### 3. Data Privacy
+- Don't log sensitive data (passwords, tokens, PII)
+- Consider data retention policies
+- Implement IP anonymization if needed
+
+### 4. Monitoring
+- Track tracking service health
+- Monitor MongoDB connection status
+- Set up alerts for tracking failures
+
+### 5. Custom Data Guidelines
+- Keep custom_data structure consistent per endpoint
+- Include relevant business metrics
+- Avoid deeply nested objects for better query performance
+
+## 🚀 Testing
+
+### Test Endpoint Tracking:
+```bash
+# Test your endpoint
+curl -X POST "http://localhost:8000/api/v0/your-endpoint" \
+  -H "Content-Type: application/json" \
+  -d '{"field": "value"}'
+
+# Check analytics
+curl "http://localhost:8000/api/v0/analytics"
+```
+
+### Verify MongoDB Data:
+```javascript
+// MongoDB query to check tracking data
+db.fastapi_tracking.find().sort({timestamp: -1}).limit(5)
+```
+
+## 📈 Extending the System
+
+### Add Custom Metrics:
+```python
+# In your endpoint
+custom_data = {
+    "user_id": request_data.user_id,
+    "feature_used": "advanced_search",
+    "processing_steps": len(processing_pipeline),
+    "cache_hit": cache_result.hit
+}
+```
+
+### Add Real-time Monitoring:
+```python
+# Add webhook notifications for errors
+if response.status_code >= 400:
+    await send_alert_webhook({
+        "endpoint": endpoint_name,
+        "error": "High error rate detected",
+        "timestamp": datetime.now()
+    })
+```
+
+This comprehensive guide provides everything needed to implement robust endpoint tracking with MongoDB in FastAPI applications. The system is production-ready with proper error handling, performance optimization, and extensibility.
