@@ -1,0 +1,128 @@
+---
+globs: *.md
+description: Apply Cody Schneider writing methodology for social media content creation
+---
+
+# Cody Schneider Social Media Writing Methodology
+
+When creating social media content in markdown files, always apply the Cody Schneider writing style and methodology.
+
+## Core Writing Style Rules
+
+### Structure & Format
+- Use short, punchy lines (1-2 sentences max per line)
+- Break up content with line breaks for scannability
+- Use lowercase for casual, conversational tone
+- No unnecessary capitalization except for proper nouns
+- Use bullet points and numbered lists for clarity
+
+### Forbidden Elements (Scott Adams Rules)
+- **Never use hyphens (-)** - restructure sentences instead
+- **Never use em dashes (—)** - use commas, periods, or restructure
+- **Never use the word "like"** - replace with:
+  - "such as" instead of "like"
+  - "including" instead of "like"
+  - "for example" instead of "like"
+  - "similar to" instead of "like"
+- **Never use emojis** in any context
+- Remove filler words: very, really, quite, rather, somewhat
+- Remove hedge words: I think, I believe, maybe, perhaps
+
+### Sentence Construction
+- Use active voice always
+- Keep sentences short and punchy
+- One idea per sentence
+- Lead with action or result
+- Eliminate unnecessary words ruthlessly
+
+## Cody Schneider Content Structure
+
+### Hook Patterns
+- Bold claim + contradiction
+- Problem/solution for target audience
+- Personal journey + surprising result
+- Direct value promise
+- Curiosity gap + expertise
+
+### Content Flow
+1. **Strong opening hook** - grab attention immediately
+2. **Process or steps** - make it actionable
+3. **Personal story/credibility** - build trust
+4. **Results or transformation** - show proof
+5. **Target audience relevance** - make it specific
+6. **CTA with "ps"** - natural call to action
+
+### Example Structure
+```
+**bold hook statement**
+
+here's my exact process for [specific outcome]
+
+step 1: [action]
+[brief explanation]
+
+step 2: [action]
+[brief explanation]
+
+[personal story or struggle]
+
+[transformation or result]
+
+[specific audience benefit]
+
+ps
+[natural CTA with link]
+```
+
+## Content Types
+
+### For LinkedIn Posts
+- Professional tone but conversational
+- Focus on business value and results
+- Include specific metrics when possible
+- Target decision makers and professionals
+- End with professional CTA
+
+### For Twitter/X Posts
+- More casual and direct
+- Shorter format
+- Focus on one key insight
+- Use thread format for longer content
+- Quick, punchy CTA
+
+## Writing Process
+
+1. **Start with the hook** - spend time crafting this
+2. **Outline the value** - what will readers learn/gain?
+3. **Add personal story** - make it relatable
+4. **Include proof** - metrics, results, credibility
+5. **Target specific audience** - who needs this?
+6. **Natural CTA** - how can you help them?
+7. **Edit ruthlessly** - remove every unnecessary word
+
+## Quality Checklist
+
+Before publishing any social media content:
+
+- [ ] Hook grabs attention in first line
+- [ ] Content is scannable with short lines
+- [ ] No hyphens, em dashes, or "like"
+- [ ] Active voice throughout
+- [ ] Specific target audience mentioned
+- [ ] Personal credibility established
+- [ ] Clear value proposition
+- [ ] Natural CTA included
+- [ ] All filler words removed
+- [ ] Each sentence serves a purpose
+
+## Example Transformations
+
+**Before**: "I was really excited to share this amazing tool that's like a game-changer for developers—it's incredibly powerful and user-friendly."
+
+**After**: "this tool changed everything for developers. simple interface. powerful results."
+
+**Before**: "Here are some tips that might help you improve your workflow, including various automation tools like Zapier and n8n that could potentially save you time."
+
+**After**: "here's how i cut my workflow time in half. step 1: automate with zapier. step 2: connect everything with n8n."
+
+Remember: Simple, clear, punchy writing wins every time. Make every word count.

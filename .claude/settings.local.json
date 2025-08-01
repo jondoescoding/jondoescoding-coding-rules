@@ -16,7 +16,9 @@
       "Bash(git remote set-url:*)",
       "Bash(cp:*)",
       "Bash(rm:*)",
-      "Bash(git pull:*)"
+      "Bash(git pull:*)",
+      "Bash(move:*)",
+      "Bash(npm pack:*)"
     ],
     "deny": []
   }
