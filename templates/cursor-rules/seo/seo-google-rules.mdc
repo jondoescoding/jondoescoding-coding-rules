@@ -1,0 +1,770 @@
+---
+description: This rule is useful for ensure the SEO within the website is actually compliant with Google Standards
+alwaysApply: false
+---
+### 13. Monitoring & Testing
+
+#### SEO Checklist for Every Page
+- [ ] Unique title tag (50-60 characters)
+- [ ] Meta description (150-160 characters)
+- [ ] One H1 tag with target keyword
+- [ ] Proper heading hierarchy (H1 → H2 → H3)
+- [ ] Alt text for all images
+- [ ]# SEO-Optimized Cursor Rules for Next.js Business Website
+
+## Project Context
+You are developing a SEO-optimized business website using Next.js 15+, React 19, Tailwind CSS, and MongoDB. Follow Google's SEO Starter Guide principles strictly. Prioritize technical SEO and mobile-first development. This project uses the App Router architecture.
+
+## Core SEO Principles
+
+### 1. Technical SEO Foundation
+- **Always use semantic HTML5 elements** (`<header>`, `<nav>`, `<main>`, `<article>`, `<section>`, `<aside>`, `<footer>`)
+- **Implement proper heading hierarchy** - Only one `<h1>` per page, followed by `<h2>`, `<h3>` in logical order
+- **Generate XML sitemaps** automatically using `next-sitemap` package
+- **Create robots.txt** with proper directives
+- **Implement canonical URLs** to prevent duplicate content issues
+- **Use Server-Side Rendering (SSR)** or Static Site Generation (SSG) for all public pages
+
+### 2. Next.js SEO Implementation
+
+#### Metadata API Usage (Next.js 15)
+```typescript
+// Always use Next.js 15 Metadata API for SEO
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Page Title - Business Name',
+  description: 'Compelling description under 160 characters that includes target keywords naturally',
+  keywords: ['relevant', 'keywords', 'for', 'SEO'],
+  authors: [{ name: 'Author Name' }],
+  creator: 'Business Name',
+  publisher: 'Business Name',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL('https://yourdomain.com'),
+  openGraph: {
+    title: 'Page Title - Business Name',
+    description: 'Compelling description for social sharing',
+    url: 'https://yourdomain.com/current-page',
+    siteName: 'Business Name',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Descriptive alt text for OG image',
+      }
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Page Title - Business Name',
+    description: 'Compelling description for Twitter',
+    creator: '@yourtwitterhandle',
+    images: ['/twitter-image.jpg'],
+  },
+  alternates: {
+    canonical: 'https://yourdomain.com/current-page',
+    languages: {
+      'en-US': 'https://yourdomain.com/en-US',
+      'es-ES': 'https://yourdomain.com/es-ES',
+    },
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    google: 'google-site-verification-code',
+    yandex: 'yandex-verification-code',
+    yahoo: 'yahoo-verification-code',
+  },
+};
+```
+
+#### Dynamic Metadata Generation with Async Support
+```typescript
+// For dynamic pages fetching from MongoDB
+import type { Metadata, ResolvingMetadata } from 'next';
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // Fetch data from MongoDB
+  const data = await fetchFromMongoDB(params.id);
+  
+  // Optionally access and extend parent metadata
+  const previousImages = (await parent).openGraph?.images || [];
+  
+  return {
+    title: `${data.title} - Business Name`,
+    description: data.metaDescription || data.excerpt,
+    openGraph: {
+      title: `${data.title} - Business Name`,
+      description: data.metaDescription || data.excerpt,
+      images: [data.featuredImage || '/default-og.jpg', ...previousImages],
+    },
+  };
+}
+```
+
+#### Title Templates for Consistency
+```typescript
+// In root layout.tsx
+export const metadata: Metadata = {
+  title: {
+    template: '%s | Business Name',
+    default: 'Business Name - Your Tagline Here',
+  },
+  description: 'Default description for your business',
+};
+
+// In individual pages - only need to specify the unique part
+export const metadata: Metadata = {
+  title: 'About Us', // Will render as "About Us | Business Name"
+};
+```
+```
+
+### 3. URL Structure Rules (Next.js 15)
+- **Use descriptive, readable URLs**: `/services/web-development` NOT `/services/service1`
+- **Keep URLs lowercase with hyphens**: `product-name` NOT `product_name` or `productName`
+- **Avoid deep nesting**: Maximum 3 levels deep (`/category/subcategory/item`)
+- **Implement proper redirects** using Next.js redirects in next.config.js
+- **Handle dynamic routes properly** with meaningful parameter names
+
+```javascript
+// next.config.js - URL redirects and rewrites
+module.exports = {
+  async redirects() {
+    return [
+      {
+        source: '/old-page',
+        destination: '/new-page',
+        permanent: true, // 301 redirect
+      },
+    ];
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/products/:slug',
+        destination: '/api/products/:slug',
+      },
+    ];
+  },
+  trailingSlash: false, // Ensure consistent URL structure
+};
+```
+
+### 4. Mobile-First Development Rules
+
+#### Responsive Design with Tailwind CSS
+```tsx
+// Always start with mobile styles, then scale up
+<div className="
+  p-4 text-sm           // Mobile first (default)
+  md:p-6 md:text-base   // Tablet (768px+)
+  lg:p-8 lg:text-lg     // Desktop (1024px+)
+  xl:px-12              // Large desktop (1280px+)
+">
+  {/* Mobile-first responsive content */}
+</div>
+```
+
+#### Performance Optimization with Next.js 15
+- **Use Next.js Image component** with automatic optimization
+```tsx
+import Image from 'next/image';
+
+// SEO-optimized image component
+function OptimizedImage({ 
+  src, 
+  alt, 
+  priority = false,
+  className = '',
+  sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+}) {
+  return (
+    <Image
+      src={src}
+      alt={alt} // Always include descriptive alt text
+      width={1200}
+      height={800}
+      sizes={sizes}
+      quality={85} // Balance quality vs file size
+      priority={priority} // Use for above-fold images
+      placeholder="blur" // Better UX during loading
+      blurDataURL={generateBlurDataURL(src)}
+      className={`${className} w-full h-auto`}
+      loading={priority ? 'eager' : 'lazy'}
+    />
+  );
+}
+```
+
+- **Implement lazy loading with React 19 features**
+```tsx
+import { Suspense, lazy } from 'react';
+import dynamic from 'next/dynamic';
+
+// For client components
+const HeavyComponent = dynamic(
+  () => import('./HeavyComponent'),
+  {
+    loading: () => <LoadingSpinner />,
+    ssr: true, // Keep true for SEO-critical content
+  }
+);
+
+// For server components with Suspense
+const Comments = lazy(() => import('./Comments'));
+
+export default function Page() {
+  return (
+    <>
+      <MainContent />
+      <Suspense fallback={<CommentsSkeleton />}>
+        <Comments />
+      </Suspense>
+    </>
+  );
+}
+```
+
+### 5. Content Structure Rules
+
+#### Schema Markup Implementation
+```jsx
+// Add structured data to every page type
+export default function BusinessPage() {
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Business Name',
+    url: 'https://yourdomain.com',
+    logo: 'https://yourdomain.com/logo.png',
+    contactPoint: {
+      '@type': 'ContactPoint',
+      telephone: '+1-234-567-8900',
+      contactType: 'customer service',
+      areaServed: 'US',
+      availableLanguage: 'English',
+    },
+    sameAs: [
+      'https://facebook.com/yourbusiness',
+      'https://twitter.com/yourbusiness',
+      'https://linkedin.com/company/yourbusiness',
+    ],
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      {/* Page content */}
+    </>
+  );
+}
+```
+
+#### Content Best Practices
+- **Write unique, valuable content** - Never copy from other sources
+- **Target 300+ words** for main content pages
+- **Include relevant keywords naturally** - No keyword stuffing
+- **Update content regularly** - Add lastModified dates to metadata
+- **Use descriptive link text** - Never use "click here" or "read more"
+
+### 6. Image Optimization Rules (Next.js 15)
+
+```tsx
+// components/SEOImage.tsx - Reusable SEO-optimized image component
+import Image from 'next/image';
+
+interface SEOImageProps {
+  src: string;
+  alt: string;
+  caption?: string;
+  priority?: boolean;
+  fill?: boolean;
+  className?: string;
+  sizes?: string;
+}
+
+export function SEOImage({ 
+  src, 
+  alt, 
+  caption, 
+  priority = false,
+  fill = false,
+  className = '',
+  sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px'
+}: SEOImageProps) {
+  // Generate blur placeholder for better UX
+  const blurDataURL = `data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`;
+  
+  return (
+    <figure className="my-8">
+      <div className={`relative ${fill ? 'h-full' : 'aspect-[16/9]'} ${className}`}>
+        <Image
+          src={src}
+          alt={alt} // Always descriptive, includes keywords when relevant
+          fill={fill}
+          {...(!fill && { width: 1200, height: 800 })}
+          sizes={sizes}
+          quality={85}
+          priority={priority}
+          placeholder="blur"
+          blurDataURL={blurDataURL}
+          className="object-cover"
+        />
+      </div>
+      {caption && (
+        <figcaption className="text-sm text-gray-600 mt-2 text-center">
+          {caption}
+        </figcaption>
+      )}
+    </figure>
+  );
+}
+
+// Helper functions for blur placeholder
+const shimmer = (w: number, h: number) => `
+<svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="g">
+      <stop stop-color="#f0f0f0" offset="20%" />
+      <stop stop-color="#e0e0e0" offset="50%" />
+      <stop stop-color="#f0f0f0" offset="70%" />
+    </linearGradient>
+  </defs>
+  <rect width="${w}" height="${h}" fill="#f0f0f0" />
+  <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
+  <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
+</svg>`;
+
+const toBase64 = (str: string) =>
+  typeof window === 'undefined'
+    ? Buffer.from(str).toString('base64')
+    : window.btoa(str);
+
+// Special file convention for OG images (app/opengraph-image.tsx)
+import { ImageResponse } from 'next/og';
+
+export const runtime = 'edge';
+export const alt = 'Business Name - Page Description';
+export const size = {
+  width: 1200,
+  height: 630,
+};
+
+export default async function Image() {
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          fontSize: 128,
+          background: 'white',
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        Business Name
+      </div>
+    ),
+    {
+      ...size,
+    }
+  );
+}
+```
+
+### 7. Performance & Core Web Vitals (Next.js 15)
+
+#### Font Optimization
+```tsx
+// app/layout.tsx - Optimize fonts with next/font
+import { Inter, Roboto_Serif } from 'next/font/google';
+
+const inter = Inter({ 
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+});
+
+const robotoSerif = Roboto_Serif({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-roboto-serif',
+  weight: ['400', '700'],
+});
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en" className={`${inter.variable} ${robotoSerif.variable}`}>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+      </head>
+      <body className="font-sans">{children}</body>
+    </html>
+  );
+}
+```
+
+#### Component Loading Strategy with Partial Prerendering
+```tsx
+// Next.js 15 - Optimize with streaming and suspense
+import { Suspense } from 'react';
+
+// Static shell loads immediately
+export default async function ProductPage({ params }: { params: { id: string } }) {
+  return (
+    <>
+      {/* Critical above-fold content */}
+      <HeroSection productId={params.id} />
+      
+      {/* Stream in non-critical content */}
+      <Suspense fallback={<ProductDetailsSkeleton />}>
+        <ProductDetails productId={params.id} />
+      </Suspense>
+      
+      <Suspense fallback={<ReviewsSkeleton />}>
+        <CustomerReviews productId={params.id} />
+      </Suspense>
+    </>
+  );
+}
+
+// Enable Partial Prerendering (experimental in Next.js 15)
+export const experimental_ppr = true;
+```
+
+#### Static Route Optimization
+```tsx
+// Force static generation where appropriate
+export const dynamic = 'force-static';
+export const revalidate = 3600; // ISR - revalidate every hour
+
+// Or force dynamic for real-time data
+export const dynamic = 'force-dynamic';
+```
+
+### 8. MongoDB Content Fetching with Next.js 15 Best Practices
+
+```typescript
+// app/lib/mongodb.ts - MongoDB connection with caching
+import { MongoClient } from 'mongodb';
+
+const uri = process.env.MONGODB_URI!;
+const options = {};
+
+let client: MongoClient;
+let clientPromise: Promise<MongoClient>;
+
+if (process.env.NODE_ENV === 'development') {
+  // In development, use a global variable to preserve the connection
+  let globalWithMongo = global as typeof globalThis & {
+    _mongoClientPromise?: Promise<MongoClient>;
+  };
+
+  if (!globalWithMongo._mongoClientPromise) {
+    client = new MongoClient(uri, options);
+    globalWithMongo._mongoClientPromise = client.connect();
+  }
+  clientPromise = globalWithMongo._mongoClientPromise;
+} else {
+  // In production, create a new client for each instance
+  client = new MongoClient(uri, options);
+  clientPromise = client.connect();
+}
+
+// SEO-friendly data fetching with proper typing
+interface PageData {
+  slug: string;
+  title: string;
+  metaDescription: string;
+  content: string;
+  lastModified: Date;
+  featuredImage?: string;
+}
+
+export async function getPageData(slug: string): Promise<PageData | null> {
+  try {
+    const mongodb = await clientPromise;
+    const db = mongodb.db('your-database');
+    
+    const data = await db.collection<PageData>('pages').findOne(
+      { slug },
+      {
+        projection: {
+          title: 1,
+          metaDescription: 1,
+          content: 1,
+          lastModified: 1,
+          featuredImage: 1,
+          slug: 1,
+        },
+      }
+    );
+
+    return data;
+  } catch (error) {
+    console.error('Failed to fetch page data:', error);
+    return null;
+  }
+}
+
+// app/[slug]/page.tsx - Using with generateStaticParams
+export async function generateStaticParams() {
+  const mongodb = await clientPromise;
+  const db = mongodb.db('your-database');
+  
+  const pages = await db.collection('pages')
+    .find({}, { projection: { slug: 1 } })
+    .toArray();
+  
+  return pages.map((page) => ({
+    slug: page.slug,
+  }));
+}
+
+// Next.js 15 - Set caching behavior
+export const revalidate = 3600; // Revalidate every hour
+export const dynamicParams = true; // Allow pages not in generateStaticParams
+```
+
+### 9. Navigation & Internal Linking
+
+```jsx
+// SEO-friendly navigation component
+function Navigation() {
+  return (
+    <nav aria-label="Main navigation">
+      <ul className="flex flex-wrap gap-4">
+        <li>
+          <Link 
+            href="/" 
+            className="text-blue-600 hover:text-blue-800 underline"
+          >
+            Home
+          </Link>
+        </li>
+        <li>
+          <Link 
+            href="/services" 
+            className="text-blue-600 hover:text-blue-800 underline"
+          >
+            Our Services
+          </Link>
+        </li>
+        {/* Always use descriptive anchor text */}
+      </ul>
+    </nav>
+  );
+}
+```
+
+### 10. Error Handling & 404 Pages
+
+```jsx
+// app/not-found.js
+export const metadata = {
+  title: '404 - Page Not Found | Business Name',
+  description: 'The page you are looking for could not be found.',
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
+
+export default function NotFound() {
+  return (
+    <main className="min-h-screen flex items-center justify-center">
+      <div className="text-center">
+        <h1 className="text-4xl font-bold mb-4">404 - Page Not Found</h1>
+        <p className="mb-8">Sorry, we couldn't find the page you're looking for.</p>
+        <Link href="/" className="text-blue-600 hover:text-blue-800 underline">
+          Return to Homepage
+        </Link>
+      </div>
+    </main>
+  );
+}
+```
+
+### 11. Security & HTTPS (Next.js 15)
+- **Always use HTTPS** - Set up proper SSL certificates
+- **Implement security headers** via next.config.js
+```javascript
+// next.config.js
+module.exports = {
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'origin-when-cross-origin',
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()',
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload',
+          },
+        ],
+      },
+    ];
+  },
+  // Next.js 15 specific optimizations
+  experimental: {
+    optimizeCss: true, // Enable CSS optimization
+    turbo: {
+      // Turbopack configuration for faster development
+      resolveAlias: {
+        '@': './src',
+      },
+    },
+  },
+  images: {
+    // Configure image optimization
+    formats: ['image/avif', 'image/webp'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+  },
+};
+```
+
+### 12. Next.js 15 Special Files for SEO
+
+#### Sitemap Generation (app/sitemap.ts)
+```typescript
+import { MetadataRoute } from 'next';
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  // Fetch dynamic pages from MongoDB
+  const pages = await getPageSlugs();
+  
+  const dynamicPages = pages.map((page) => ({
+    url: `https://yourdomain.com/${page.slug}`,
+    lastModified: page.lastModified,
+    changeFrequency: 'weekly' as const,
+    priority: 0.8,
+  }));
+
+  return [
+    {
+      url: 'https://yourdomain.com',
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 1,
+    },
+    {
+      url: 'https://yourdomain.com/about',
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    ...dynamicPages,
+  ];
+}
+```
+
+#### Robots.txt (app/robots.ts)
+```typescript
+import { MetadataRoute } from 'next';
+
+export default function robots(): MetadataRoute.Robots {
+  return {
+    rules: [
+      {
+        userAgent: '*',
+        allow: '/',
+        disallow: ['/api/', '/admin/', '/private/'],
+      },
+      {
+        userAgent: 'Googlebot',
+        allow: '/',
+      },
+    ],
+    sitemap: 'https://yourdomain.com/sitemap.xml',
+  };
+}
+```
+
+#### Favicon and App Icons
+```
+app/
+  favicon.ico         # Standard favicon
+  icon.tsx           # Dynamic icon generation
+  apple-icon.tsx     # Apple touch icon
+  opengraph-image.tsx # OG image generation
+  twitter-image.tsx   # Twitter card image
+```
+
+## Code Review Checklist
+
+Before committing any code, ensure:
+1. All images use Next.js Image component with proper alt text
+2. Every page has unique metadata
+3. URLs are descriptive and SEO-friendly
+4. Content is mobile-first responsive
+5. No duplicate content without canonical tags
+6. All external links use rel="nofollow" when appropriate
+7. Structured data is valid and relevant
+8. Page loads in under 3 seconds
+9. No broken internal links
+10. Proper 301 redirects for any URL changes
+
+## Common Pitfalls to Avoid
+- ❌ Using generic titles like "Home" or "About"
+- ❌ Forgetting alt text on images
+- ❌ Creating thin content pages (<300 words)
+- ❌ Using JavaScript-only navigation
+- ❌ Blocking important resources in robots.txt
+- ❌ Having multiple H1 tags per page
+- ❌ Using non-descriptive URLs (/page1, /page2)
+- ❌ Ignoring Core Web Vitals
+- ❌ Not implementing proper error pages
+- ❌ Forgetting to update XML sitemap
+
+Remember: SEO is an ongoing process. Regularly audit your site, monitor performance, and update content to maintain and improve rankings.

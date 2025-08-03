@@ -66,15 +66,15 @@ npx jondoescoding-cursor-rules --list --type cursor
 npx jondoescoding-cursor-rules --list --type claude-code
 
 # Install specific templates (defaults to cursor type)
-npx jondoescoding-cursor-rules typescript
 npx jondoescoding-cursor-rules writing/scott-adams-writing-principles
+npx jondoescoding-cursor-rules python/llm/observability/langfuse
 
 # Install with explicit type
 npx jondoescoding-cursor-rules --type cursor python/llm/observability/langfuse
 npx jondoescoding-cursor-rules --type claude-code memory-management
 
 # Install multiple templates
-npx jondoescoding-cursor-rules typescript react nodejs
+npx jondoescoding-cursor-rules writing/scott-adams-writing-principles python/llm/observability/langfuse
 npx jondoescoding-cursor-rules --type claude-code memory-management project-setup
 
 # Install all available templates of a type
@@ -97,12 +97,6 @@ jondoescoding-cursor-rules --help
 ## 🎯 Cursor AI Rules (`--type cursor`)
 *Installed to `.cursor/rules/` - Used by Cursor AI for coding assistance*
 
-### Core Templates
-| Template | Description | File Types |
-|----------|-------------|------------|
-| `typescript` | TypeScript coding standards and best practices | `*.ts`, `*.tsx` |
-| `react` | React development standards and patterns | `*.jsx`, `*.tsx` |
-| `nodejs` | Node.js backend development standards | `*.js`, `*.ts`, `server/**/*`, `api/**/*` |
 
 ### Python Templates
 | Template | Description | File Types |
@@ -148,9 +142,6 @@ jondoescoding-cursor-rules/
 ├── bin/
 │   └── cli.js              # Main CLI script
 ├── templates/              # Rule templates directory
-│   ├── typescript.mdc      # TypeScript rules
-│   ├── react.mdc          # React rules
-│   ├── nodejs.mdc         # Node.js rules
 │   ├── python/            # Python-specific templates
 │   │   └── llm/           # LLM development templates
 │   │       └── observability/
@@ -322,8 +313,7 @@ Create organization-specific rules:
 ```bash
 # Example: Create a company-wide rule set with categories
 templates/
-├── company-typescript.mdc    # Your TS standards
-├── company-react.mdc        # Your React patterns  
+  
 ├── api/
 │   ├── rest.mdc             # REST API conventions
 │   └── graphql.mdc         # GraphQL patterns

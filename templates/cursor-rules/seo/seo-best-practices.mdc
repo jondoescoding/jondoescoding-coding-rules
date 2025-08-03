@@ -1,0 +1,73 @@
+# SEO Best Practices for Page Modifications
+
+## Core Principles
+When modifying any page, ALWAYS prioritize SEO-friendly approaches:
+
+### 1. Server vs Client Components
+- **Keep pages as Server Components by default** for better SEO
+- Only convert to Client Components when absolutely necessary for interactivity
+- **Hybrid approach**: Extract interactive elements into separate Client Components
+- Example: Create `ShareButtons.tsx` as Client Component, keep main page as Server Component
+
+### 2. Meta Tags & Structured Data
+- **Always include comprehensive metadata** in page files like [app/templates/n8n/page.tsx](mdc:app/templates/n8n/page.tsx)
+- Required meta tags:
+  - `title` (unique, descriptive, 50-60 characters)
+  - `description` (compelling, 150-160 characters)
+  - `keywords` (relevant, trending terms)
+  - Open Graph tags (`og:title`, `og:description`, `og:image`, `og:url`)
+  - Twitter Card tags
+  - Canonical URLs
+- **Add JSON-LD structured data** for rich snippets
+- Use schema.org markup for templates, articles, and services
+
+### 3. Content Optimization
+- **H1 tags**: One per page, descriptive, includes primary keyword
+- **H2-H6 hierarchy**: Logical structure, includes related keywords
+- **Content quality**: Detailed, valuable, answers user intent
+- **Internal linking**: Link to related pages and services
+- **Image optimization**: Alt text, proper sizing, WebP format when possible
+
+### 4. URL Structure
+- **Clean URLs**: `/templates/n8n/[slug]` format
+- **Descriptive slugs**: Include primary keywords
+- **Breadcrumbs**: Clear navigation hierarchy
+- **Canonical URLs**: Prevent duplicate content issues
+
+### 5. Performance & Core Web Vitals
+- **Lazy loading**: Non-critical components and images
+- **Code splitting**: Separate Client Components
+- **ISR (Incremental Static Regeneration)**: Use `revalidate` for dynamic content
+- **Minimize JavaScript**: Keep client-side code minimal
+
+### 6. Technical SEO Checklist
+Before modifying any page, ensure:
+- [ ] Meta tags are complete and optimized
+- [ ] Structured data is implemented
+- [ ] Page loads server-side rendered content
+- [ ] Interactive elements are isolated in Client Components
+- [ ] URLs follow SEO-friendly patterns
+- [ ] Content includes target keywords naturally
+- [ ] Internal linking strategy is maintained
+- [ ] Images have proper alt text
+- [ ] Page performance remains optimal
+
+### 7. Content Strategy Integration
+- **Trending keywords**: Use research from [docs/seo_review/trending-keywords-2025.md](mdc:docs/seo_review/trending-keywords-2025.md)
+- **Primary keywords**: "AI agents", "Agentic AI", "AI automation workflows"
+- **Brand positioning**: Align with "Building websites that run themselves"
+- **User intent**: Match content to search intent (informational, transactional, navigational)
+
+## Common SEO Mistakes to Avoid
+1. **Converting entire pages to Client Components** - Hurts crawlability
+2. **Missing or generic meta descriptions** - Poor click-through rates
+3. **Duplicate content** - Canonical issues
+4. **Slow loading times** - Poor Core Web Vitals
+5. **Missing structured data** - No rich snippets
+6. **Poor internal linking** - Missed link equity distribution
+
+## Implementation Examples
+- ✅ **Good**: Separate `ShareButtons.tsx` Client Component within Server Component page
+- ✅ **Good**: Comprehensive metadata in [app/templates/n8n/page.tsx](mdc:app/templates/n8n/page.tsx)
+- ❌ **Bad**: Converting entire template detail page to Client Component
+- ❌ **Bad**: Missing or auto-generated meta descriptions

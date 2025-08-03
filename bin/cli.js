@@ -144,7 +144,7 @@ Import Types:
 Examples:
   npx jondoescoding-cursor-rules --list --type cursor
   npx jondoescoding-cursor-rules --list --type claude-code
-  npx jondoescoding-cursor-rules typescript
+  npx jondoescoding-cursor-rules writing/scott-adams-writing-principles
   npx jondoescoding-cursor-rules --type cursor writing/scott-adams-writing-principles
   npx jondoescoding-cursor-rules --type claude-code python/config
   npx jondoescoding-cursor-rules --all --type cursor
