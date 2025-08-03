@@ -68,13 +68,14 @@ npx jondoescoding-cursor-rules --list --type claude-code
 # Install specific templates (defaults to cursor type)
 npx jondoescoding-cursor-rules writing/scott-adams-writing-principles
 npx jondoescoding-cursor-rules python/llm/observability/langfuse
+npx jondoescoding-cursor-rules seo/seo-best-practices
 
 # Install with explicit type
 npx jondoescoding-cursor-rules --type cursor python/llm/observability/langfuse
 npx jondoescoding-cursor-rules --type claude-code memory-management
 
 # Install multiple templates
-npx jondoescoding-cursor-rules writing/scott-adams-writing-principles python/llm/observability/langfuse
+npx jondoescoding-cursor-rules writing/scott-adams-writing-principles seo/seo-best-practices
 npx jondoescoding-cursor-rules --type claude-code memory-management project-setup
 
 # Install all available templates of a type
@@ -102,6 +103,13 @@ jondoescoding-cursor-rules --help
 | Template | Description | File Types |
 |----------|-------------|------------|
 | `python/llm/observability/langfuse` | Complete LangFuse tracing setup for FastAPI + LangChain/LangGraph | `**/*.py`, `src/**/*`, `api/**/*` |
+
+### SEO Templates
+| Template | Description | File Types |
+|----------|-------------|------------|
+| `seo/seo-best-practices` | SEO best practices for page modifications and server-side rendering | `**/*.tsx`, `**/*.jsx`, `app/**/*` |
+| `seo/seo-google-rules` | Google SEO standards compliance rules for Next.js business websites | `**/*.tsx`, `**/*.jsx`, `**/*.ts` |
+| `seo/seo_rules` | Elite Technical & Content SEO strategy for AI automation and web design agencies | `**/*.tsx`, `**/*.jsx`, `content/**/*` |
 
 ### Writing Templates
 | Template | Description | File Types |
@@ -146,12 +154,16 @@ jondoescoding-cursor-rules/
 │   │   └── llm/           # LLM development templates
 │   │       └── observability/
 │   │           └── langfuse.mdc  # LangFuse tracing guide
-│   └── writing/           # Content creation templates
-│       ├── content-curation-rule.mdc
-│       ├── scott-adams-writing-principles.mdc
-│       ├── seo-long-form-article-blueprint.mdc
-│       ├── tweet-interview-process.mdc
-│       └── twitter-thread-creation.mdc
+│   ├── seo/               # SEO optimization templates
+│   │   ├── seo-best-practices.mdc    # SEO best practices
+│   │   ├── seo-google-rules.mdc      # Google SEO standards
+│   │   └── seo_rules.mdc             # Technical SEO strategy
+│   ├── writing/           # Content creation templates
+│   │   ├── content-curation-rule.mdc
+│   │   ├── scott-adams-writing-principles.mdc
+│   │   ├── seo-long-form-article-blueprint.mdc
+│   │   ├── tweet-interview-process.mdc
+│   │   └── twitter-thread-creation.mdc
 │   └── tasking/            # Task management templates
 │       └── task-management.mdc
 ├── templates/
