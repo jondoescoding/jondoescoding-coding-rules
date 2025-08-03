@@ -121,7 +121,7 @@ Usage:
 Options:
   --type <type>       Import type: 'cursor' (default) or 'claude-code'
   --list, -l          List all available templates
-  --all              Install all available templates
+  --all              Install all available templates (both types if no --type specified)
   --help, -h         Show this help message
   <template-name>    Install a specific template
 
@@ -136,6 +136,7 @@ Examples:
   npx jondoescoding-cursor-rules --type cursor writing/scott-adams-writing-principles
   npx jondoescoding-cursor-rules --type claude-code python/config
   npx jondoescoding-cursor-rules --all --type cursor
+  npx jondoescoding-cursor-rules --all                # Installs BOTH cursor and claude-code rules
 `);
 }
 
@@ -183,7 +184,47 @@ function listTemplates(importType = 'cursor') {
   console.log(`   Example: npx jondoescoding-cursor-rules --type ${importType} ${templates[0] || 'template-name'}\n`);
 }
 
-function installAllTemplates(importType = 'cursor') {
+function installAllTemplates(importType = null) {
+  // If no specific type is provided, install both cursor and claude-code rules
+  if (importType === null) {
+    console.log('🚀 Installing all templates for both Cursor AI and Claude Code...\n');
+    
+    let totalInstalled = 0;
+    let totalTemplates = 0;
+    
+    // Install cursor rules
+    const cursorTemplates = getAvailableTemplates('cursor');
+    console.log('📦 Installing Cursor AI rules...');
+    let cursorInstalled = 0;
+    cursorTemplates.forEach(template => {
+      if (installTemplate(template, 'cursor')) {
+        cursorInstalled++;
+      }
+    });
+    totalInstalled += cursorInstalled;
+    totalTemplates += cursorTemplates.length;
+    
+    console.log(`✅ Cursor AI: ${cursorInstalled}/${cursorTemplates.length} templates installed\n`);
+    
+    // Install claude-code rules
+    const claudeTemplates = getAvailableTemplates('claude-code');
+    console.log('📦 Installing Claude Code configuration...');
+    let claudeInstalled = 0;
+    claudeTemplates.forEach(template => {
+      if (installTemplate(template, 'claude-code')) {
+        claudeInstalled++;
+      }
+    });
+    totalInstalled += claudeInstalled;
+    totalTemplates += claudeTemplates.length;
+    
+    console.log(`✅ Claude Code: ${claudeInstalled}/${claudeTemplates.length} templates installed`);
+    console.log(`\n🎉 Total: ${totalInstalled}/${totalTemplates} templates installed across both platforms`);
+    
+    return;
+  }
+  
+  // Original behavior for specific import type
   const templates = getAvailableTemplates(importType);
   let installed = 0;
   
@@ -226,7 +267,9 @@ function main() {
   }
   
   if (args.includes('--all')) {
-    installAllTemplates(importType);
+    // If --all is used without --type, install both cursor and claude-code
+    const hasTypeFlag = args.includes('--type');
+    installAllTemplates(hasTypeFlag ? importType : null);
     return;
   }
   

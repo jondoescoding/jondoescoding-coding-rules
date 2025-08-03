@@ -51,6 +51,13 @@ Claude Code templates are workflow guides placed in `.claude/` that optimize you
 
 ## 🛠 Installation & Usage
 
+### ⚡ Super Quick Start (NEW!)
+
+```bash
+# Install EVERYTHING (both Cursor AI and Claude Code rules)
+npx jondoescoding-cursor-rules --all
+```
+
 ### Quick Start (Recommended)
 
 ```bash
@@ -73,6 +80,9 @@ npx jondoescoding-cursor-rules --type claude-code memory-management project-setu
 # Install all available templates of a type
 npx jondoescoding-cursor-rules --all --type cursor
 npx jondoescoding-cursor-rules --all --type claude-code
+
+# Install ALL templates (both cursor and claude-code) - NEW!
+npx jondoescoding-cursor-rules --all
 ```
 
 ### Global Installation
