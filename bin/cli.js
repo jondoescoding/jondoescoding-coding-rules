@@ -98,12 +98,24 @@ function installTemplate(templateName, importType = 'cursor') {
     return false;
   }
   
-  const targetFileName = templateName.replace(/\//g, '-'); // Replace slashes with dashes
-  const targetPath = path.join(config.dir, `${targetFileName}${actualExtension}`);
+  // Preserve folder structure instead of flattening
+  const templateParts = templateName.split('/');
+  const fileName = templateParts.pop(); // Get the actual filename
+  const folderPath = templateParts.join('/'); // Get the folder path
+  
+  // Create the full target directory path
+  const targetDir = folderPath ? path.join(config.dir, folderPath) : config.dir;
+  const targetPath = path.join(targetDir, `${fileName}${actualExtension}`);
   
   try {
+    // Ensure the target directory exists
+    if (folderPath) {
+      fs.mkdirSync(targetDir, { recursive: true });
+    }
+    
     fs.copyFileSync(templatePath, targetPath);
-    console.log(`✅ Added ${targetFileName}${actualExtension} to your ${config.description.toLowerCase()}`);
+    const relativePath = folderPath ? `${folderPath}/${fileName}${actualExtension}` : `${fileName}${actualExtension}`;
+    console.log(`✅ Added ${relativePath} to your ${config.description.toLowerCase()}`);
     return true;
   } catch (error) {
     console.error(`❌ Failed to install ${templateName}: ${error.message}`);
