@@ -1,0 +1,194 @@
+---
+description: FastAPI project structure guide for AI-powered applications with LangChain integration
+---
+
+# FastAPI Project Structure Guide
+
+This rule provides a comprehensive outline of a well-organized FastAPI project structure optimized for AI-powered applications with LangChain integration, vector databases, and agent-based architectures.
+
+## 📁 Project Root Structure
+
+```
+project-root/
+├── backend/                    # FastAPI backend application
+├── frontend/                   # Frontend application (Next.js/React)
+├── docs/                      # Project documentation
+├── scripts/                   # Deployment and utility scripts
+├── .env                       # Environment variables
+├── .gitignore                 # Git ignore patterns
+├── LICENSE                    # Project license
+└── README.md                  # Project overview
+```
+
+## 🚀 Backend Structure (`backend/`)
+
+### Core Application Files
+```
+backend/
+├── src/                       # Main source code directory
+├── data/                      # Data files, CSVs, documents
+├── docs/                      # Backend-specific documentation
+├── logs/                      # Application logs
+├── scripts/                   # Backend utility scripts
+├── pyproject.toml            # Python project configuration
+├── requirements.txt          # Python dependencies
+├── README.md                 # Backend documentation
+└── start.sh                  # Application startup script
+```
+
+### Source Code Organization (`backend/src/`)
+
+#### 📋 Main Entry Point
+- **`main.py`** - FastAPI application initialization
+  - App configuration and metadata
+  - CORS middleware setup
+  - Router registration
+  - Environment-based configuration
+  - Lifespan event handlers
+
+#### 🌐 API Layer (`api/`)
+API route definitions and endpoint handlers:
+- **`{feature}_api.py`** - Feature-specific API routers
+  - Request/response models validation
+  - Error handling and logging
+  - Business logic delegation to services
+  - OpenAPI documentation
+
+Example structure:
+```python
+# pdf_agent_api.py
+from fastapi import APIRouter, HTTPException
+from ..models.chatbot import RagChatRequest, ChatResponse
+from ..services.pdf_agent_service import run_retrieval_agent
+
+router = APIRouter()
+
+@router.post("/pdf_agent", response_model=ChatResponse)
+async def rag_agent_endpoint(chat_request_body: RagChatRequest):
+    # Endpoint implementation
+```
+
+#### 🧠 Agents Layer (`agents/`)
+LangGraph agent implementations:
+- **`{feature}_agent.py`** - Agent workflow definitions
+  - State management schemas
+  - Node function implementations
+  - Edge condition logic
+  - Graph compilation and checkpointing
+
+#### 🔧 Services Layer (`services/`)
+Business logic and orchestration:
+- **`{feature}_service.py`** - Service implementations
+  - Agent invocation logic
+  - Data processing and transformation
+  - External API integrations
+  - Error handling and retry logic
+
+#### 🏗️ Core Infrastructure (`core/`)
+Shared application components:
+- **`llm.py`** - Language model initialization and configuration
+- **`vector_store.py`** - Vector database setup (Pinecone, Chroma, etc.)
+- **`checkpointer.py`** - Conversation state persistence
+- **`langfuse_config.py`** - Observability and tracing setup
+- **`lifespan.py`** - Application lifecycle management
+
+#### 📊 Models Layer (`models/`)
+Pydantic data models:
+- **`chatbot.py`** - Request/response schemas
+  - Input validation models
+  - Output formatting models
+  - Shared data structures
+
+Example:
+```python
+class RagChatRequest(BaseModel):
+    question: str
+    conversation_id: str
+    filters: Optional[Dict[str, Any]] = None
+
+class ChatResponse(BaseModel):
+    answer: str
+    sources: Optional[List[Dict[str, Any]]] = None
+```
+
+#### 💬 Prompts Layer (`prompts/`)
+AI prompt templates and configurations:
+- **`{feature}_prompt.py`** - Prompt engineering
+  - System prompts
+  - User prompt templates
+  - Few-shot examples
+  - Prompt versioning
+
+#### 🛠️ Tools Layer (`tools/`)
+LangChain tool implementations:
+- **`{feature}_tools.py`** - Custom tool definitions
+  - Tool function implementations
+  - Input/output schemas
+  - Tool descriptions and metadata
+
+#### 🔧 Utils Layer (`utils/`)
+Utility functions and helpers:
+- **`config.py`** - Configuration management and settings
+- **`logger.py`** - Logging setup and configuration
+- **`{domain}_data.py`** - Data processing utilities
+
+Example utility structure:
+```python
+# config.py
+from pydantic_settings import BaseSettings
+
+class Settings(BaseSettings):
+    openai_api_key: str
+    pinecone_api_key: str
+    environment: str = "development"
+    
+    class Config:
+        env_file = ".env"
+```
+
+## 🎯 Key Implementation Patterns
+
+### 1. **Dependency Injection Pattern**
+- Services injected into API layers
+- Configuration passed through dependency injection
+- Database connections managed at application level
+
+### 2. **Layered Architecture**
+- **API Layer**: HTTP handling and validation
+- **Service Layer**: Business logic and orchestration  
+- **Agent Layer**: AI workflow implementation
+- **Core Layer**: Shared infrastructure components
+
+### 3. **Configuration Management**
+- Environment-based configuration
+- Pydantic settings for type safety
+- Centralized configuration access
+
+### 4. **Error Handling Strategy**
+- Structured logging throughout application
+- Custom exception classes
+- Graceful error responses
+
+### 5. **AI Integration Patterns**
+- LangGraph for complex agent workflows
+- LangChain for tool integration
+- Vector databases for semantic search
+- Conversation state management
+
+## 📝 File Naming Conventions
+
+- **API files**: `{feature}_api.py`
+- **Service files**: `{feature}_service.py`  
+- **Agent files**: `{feature}_agent.py`
+- **Model files**: `{domain}.py` (e.g., `chatbot.py`)
+- **Tool files**: `{feature}_tools.py`
+- **Prompt files**: `{feature}_prompt.py`
+
+## 🔍 Example Implementation Flow
+
+1. **Request Flow**: `API → Service → Agent → Tools`
+2. **Data Flow**: `Models → Validation → Processing → Response`
+3. **Configuration Flow**: `Environment → Settings → Components`
+4. **Logging Flow**: `Request → Service → Agent → Response`
+
+This structure provides separation of concerns, maintainability, and scalability for AI-powered FastAPI applications with complex agent workflows and vector database integrations.

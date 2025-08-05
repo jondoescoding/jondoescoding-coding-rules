@@ -18,7 +18,10 @@
       "Bash(rm:*)",
       "Bash(git pull:*)",
       "Bash(move:*)",
-      "Bash(npm pack:*)"
+      "Bash(npm pack:*)",
+      "Bash(npm view:*)",
+      "Bash(tree:*)",
+      "Bash(dir:*)"
     ],
     "deny": []
   }
