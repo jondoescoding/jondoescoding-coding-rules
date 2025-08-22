@@ -128,7 +128,7 @@ function showHelp() {
 🎯 JonDoesCoding Development Rules CLI
 
 Usage:
-  npx jondoescoding-cursor-rules [options] [template-name]
+  npx jondoescoding-coding-rules [options] [template-name]
 
 Options:
   --type <type>       Import type: 'cursor' (default) or 'claude-code'
@@ -142,13 +142,13 @@ Import Types:
   claude-code        Claude Code configuration files
 
 Examples:
-  npx jondoescoding-cursor-rules --list --type cursor
-  npx jondoescoding-cursor-rules --list --type claude-code
-  npx jondoescoding-cursor-rules writing/scott-adams-writing-principles
-  npx jondoescoding-cursor-rules --type cursor writing/scott-adams-writing-principles
-  npx jondoescoding-cursor-rules --type claude-code python/config
-  npx jondoescoding-cursor-rules --all --type cursor
-  npx jondoescoding-cursor-rules --all                # Installs BOTH cursor and claude-code rules
+  npx jondoescoding-coding-rules --list --type cursor
+  npx jondoescoding-coding-rules --list --type claude-code
+  npx jondoescoding-coding-rules writing/scott-adams-writing-principles
+  npx jondoescoding-coding-rules --type cursor writing/scott-adams-writing-principles
+  npx jondoescoding-coding-rules --type claude-code python/config
+  npx jondoescoding-coding-rules --all --type cursor
+  npx jondoescoding-coding-rules --all                # Installs BOTH cursor and claude-code rules
 `);
 }
 
@@ -192,8 +192,8 @@ function listTemplates(importType = 'cursor') {
     });
   });
   
-  console.log(`\n💡 Usage: npx jondoescoding-cursor-rules --type ${importType} <template-name>`);
-  console.log(`   Example: npx jondoescoding-cursor-rules --type ${importType} ${templates[0] || 'template-name'}\n`);
+  console.log(`\n💡 Usage: npx jondoescoding-coding-rules --type ${importType} <template-name>`);
+  console.log(`   Example: npx jondoescoding-coding-rules --type ${importType} ${templates[0] || 'template-name'}\n`);
 }
 
 function installAllTemplates(importType = null) {

@@ -2,7 +2,7 @@
 
 > A powerful CLI tool to manage and distribute custom Cursor AI rule templates for enhanced AI-assisted development.
 
-[![npm version](https://badge.fury.io/js/jondoescoding-cursor-rules.svg)](https://badge.fury.io/js/jondoescoding-cursor-rules)
+[![npm version](https://badge.fury.io/js/jondoescoding-coding-rules.svg)](https://badge.fury.io/js/jondoescoding-coding-rules)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## 🚀 What This Does
@@ -55,42 +55,42 @@ Claude Code templates are workflow guides placed in `.claude/` that optimize you
 
 ```bash
 # Install EVERYTHING (both Cursor AI and Claude Code rules)
-npx jondoescoding-cursor-rules --all
+npx jondoescoding-coding-rules --all
 ```
 
 ### Quick Start (Recommended)
 
 ```bash
 # List available templates by type
-npx jondoescoding-cursor-rules --list --type cursor
-npx jondoescoding-cursor-rules --list --type claude-code
+npx jondoescoding-coding-rules --list --type cursor
+npx jondoescoding-coding-rules --list --type claude-code
 
 # Install specific templates (defaults to cursor type)
-npx jondoescoding-cursor-rules writing/scott-adams-writing-principles
-npx jondoescoding-cursor-rules python/llm/observability/langfuse
-npx jondoescoding-cursor-rules seo/seo-best-practices
+npx jondoescoding-coding-rules writing/scott-adams-writing-principles
+npx jondoescoding-coding-rules python/llm/observability/langfuse
+npx jondoescoding-coding-rules seo/seo-best-practices
 
 # Install with explicit type
-npx jondoescoding-cursor-rules --type cursor python/llm/observability/langfuse
-npx jondoescoding-cursor-rules --type claude-code memory-management
+npx jondoescoding-coding-rules --type cursor python/llm/observability/langfuse
+npx jondoescoding-coding-rules --type claude-code memory-management
 
 # Install multiple templates
-npx jondoescoding-cursor-rules writing/scott-adams-writing-principles seo/seo-best-practices
-npx jondoescoding-cursor-rules --type claude-code memory-management project-setup
+npx jondoescoding-coding-rules writing/scott-adams-writing-principles seo/seo-best-practices
+npx jondoescoding-coding-rules --type claude-code memory-management project-setup
 
 # Install all available templates of a type
-npx jondoescoding-cursor-rules --all --type cursor
-npx jondoescoding-cursor-rules --all --type claude-code
+npx jondoescoding-coding-rules --all --type cursor
+npx jondoescoding-coding-rules --all --type claude-code
 
 # Install ALL templates (both cursor and claude-code) - NEW!
-npx jondoescoding-cursor-rules --all
+npx jondoescoding-coding-rules --all
 ```
 
 ### Global Installation
 
 ```bash
-npm install -g jondoescoding-cursor-rules
-jondoescoding-cursor-rules --help
+npm install -g jondoescoding-coding-rules
+jondoescoding-coding-rules --help
 ```
 
 ## 📚 Available Templates
@@ -146,7 +146,7 @@ Each template includes:
 ## 📁 Project Structure
 
 ```
-jondoescoding-cursor-rules/
+jondoescoding-coding-rules/
 ├── bin/
 │   └── cli.js              # Main CLI script
 ├── templates/              # Rule templates directory
@@ -288,8 +288,8 @@ def get_user_profile(user_id):
 
 ```bash
 # Clone and setup  
-git clone https://github.com/jondoescoding/jondoescoding-cursor-rules.git
-cd jondoescoding-cursor-rules
+git clone https://github.com/jondoescoding/jondoescoding-coding-rules.git
+cd jondoescoding-coding-rules
 npm install
 
 # Test locally
@@ -304,7 +304,7 @@ node bin/cli.js typescript
 3. **Update package.json** with your package name:
    ```json
    {
-     "name": "your-custom-cursor-rules",
+     "name": "your-custom-coding-rules",
      "description": "Your team's cursor rules",
      "author": "Your Name"
    }
@@ -315,7 +315,7 @@ node bin/cli.js typescript
    ```
 5. **Share with your team**:
    ```bash
-   npx your-custom-cursor-rules --all
+   npx your-custom-coding-rules --all
    ```
 
 ### Customizing for Your Team
