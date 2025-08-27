@@ -127,24 +127,32 @@ When you're finished, a user should be able to:
 - ❌ **BLOCKED** - Task waiting for dependencies
 - 📋 **NOT STARTED** - Task not yet begun
 
-## Task Management Rules
+## Task Management Rules (Enhanced with Industry Best Practices)
 
-### When Creating New Tasks:
+### When Creating New Tasks (SMART Framework):
 1. **Always include** dependencies and clear success criteria explained in simple terms
-2. **Break down large tasks** into small, understandable subtasks with checkboxes
+2. **Break down large tasks** into small, understandable subtasks with checkboxes (Maximum 8 hours per subtask)
 3. **Use consistent numbering** (Phase.Section format like 1.1, 1.2, 2.1)
 4. **Add "WHAT THIS MEANS" section** to explain the purpose and impact in simple language
 5. **Add implementation details section** written in clear, non-technical language when possible
 6. **Reference related files** using proper mdc format when relevant
+7. **Apply SMART criteria** - Tasks must be Specific, Measurable, Achievable, Relevant, and Time-bound
+8. **Include risk assessment** - Identify potential blockers and mitigation strategies
+9. **Set estimation** - Add time estimates using t-shirt sizes (XS=1hr, S=2-4hr, M=4-8hr, L=1-2days, XL=3+days)
+10. **Define acceptance criteria** - Clear "Definition of Done" for each task
 
-### When Updating Tasks:
+### When Updating Tasks (Agile Best Practices):
 1. **Update status indicators** with appropriate emojis and clear explanations
 2. **Add implementation details** with findings and results in simple, understandable language
 3. **Update dependencies** when tasks are completed with explanations of what this unlocks
 4. **Add "READY FOR" statements** with clear explanations of next steps and why they matter
 5. **Always explain the impact** of completing this task in terms anyone can understand
+6. **Track actual vs estimated time** - Record how long tasks actually took vs estimates for future planning
+7. **Log lessons learned** - Document what worked well and what could be improved
+8. **Update blockers immediately** - Mark tasks as blocked as soon as issues are identified
+9. **Communicate status changes** - Notify stakeholders when task status changes significantly
 
-### Status Update Format:
+### Status Update Format (Enhanced Reporting):
 ```markdown
 **FINAL EXECUTION RESULTS:**
 1. **Completion:** ✅ 100% - All X items processed
@@ -152,13 +160,20 @@ When you're finished, a user should be able to:
 3. **Quality:** Quality assessment in simple terms
 4. **What This Achieved:** Clear explanation of what we accomplished and why it matters
 5. **Impact:** Business/technical impact description in understandable language
+6. **Time Tracking:** Estimated: X hours | Actual: Y hours | Variance: Z%
+7. **Risks Encountered:** List any blockers that occurred and how they were resolved
+8. **Lessons Learned:** Key insights for future similar tasks
+9. **Next Actions:** What should happen next and who is responsible
 ```
 
-### Progress Tracking:
+### Progress Tracking (Kanban-Inspired):
 - Update the "Last Updated" timestamp whenever changes are made
 - Maintain accurate phase status in project timeline with clear descriptions
 - Document lessons learned in implementation details using simple, clear language
 - Always explain what each update means for the overall project progress
+- **Work-in-Progress Limits:** Maximum 3 tasks "IN PROGRESS" at one time to maintain focus
+- **Cycle Time Tracking:** Measure how long tasks spend in each status for process improvement
+- **Cumulative Flow:** Track how many tasks are in each status over time
 
 ### File Organization:
 - Store task logs in `.cursor/task-logs/` directory
@@ -199,4 +214,99 @@ When you're finished, a user should be able to:
 - **What this enables us to do next** (logical progression)
 - **Overall progress** (where we are in the big picture)
 
-This system ensures comprehensive project tracking, clear progress visibility, and detailed documentation specifically designed for someone who needs extra clarity and context to understand what's happening.
+## 🚀 Industry Best Practices Integration
+
+### Sprint Planning (Agile Methodology)
+```markdown
+## 📅 Sprint Planning (2-Week Cycles)
+
+### Sprint Goal
+**What we want to achieve:** [Clear, simple sprint objective]
+
+### Sprint Backlog
+- [ ] **Priority 1 (Must Have)**: [Critical tasks]
+- [ ] **Priority 2 (Should Have)**: [Important tasks]  
+- [ ] **Priority 3 (Nice to Have)**: [Enhancement tasks]
+
+### Capacity Planning
+- **Available Hours:** X hours this sprint
+- **Committed Hours:** Y hours of work planned
+- **Buffer:** Z hours for unexpected issues (20% recommended)
+```
+
+### Risk Management Framework
+```markdown
+## ⚠️ RISK ASSESSMENT
+
+### Identified Risks
+| Risk | Probability | Impact | Mitigation Strategy | Owner |
+|------|------------|--------|-------------------|-------|
+| [Risk description] | High/Med/Low | High/Med/Low | [How to prevent/handle] | [Person] |
+
+### Contingency Plans
+- **If [scenario occurs]:** Then [backup plan]
+- **If [scenario occurs]:** Then [backup plan]
+```
+
+### Quality Assurance Standards
+```markdown
+### ✅ Definition of Done Checklist
+Before marking any task as "COMPLETED", verify:
+- [ ] **Functionality works** as expected (tested personally)
+- [ ] **Documentation updated** with clear explanations
+- [ ] **No new issues introduced** (regression check)
+- [ ] **Acceptance criteria met** (all requirements satisfied)
+- [ ] **Code/work reviewed** (if applicable)
+- [ ] **Stakeholder approval** received (if required)
+```
+
+### Continuous Improvement (Retrospectives)
+```markdown
+## 🔄 RETROSPECTIVE TEMPLATE (Weekly/Sprint End)
+
+### What Went Well? 🟢
+- [Thing that worked well and why]
+- [Process/tool that helped]
+
+### What Could Be Better? 🟡  
+- [Challenge faced and potential solution]
+- [Process that could be improved]
+
+### Action Items for Next Sprint 🎯
+- [ ] **[Improvement action]** - Owner: [Name] - Due: [Date]
+- [ ] **[Process change]** - Owner: [Name] - Due: [Date]
+
+### Key Metrics This Sprint
+- **Tasks Completed:** X/Y (Z% completion rate)
+- **Average Cycle Time:** X hours/days per task
+- **Blockers Encountered:** X issues, resolved in Y average time
+```
+
+### Stakeholder Communication Template
+```markdown
+## 📣 STAKEHOLDER UPDATE TEMPLATE
+
+### Executive Summary (1-2 sentences)
+[What was accomplished and current status]
+
+### Progress This Period
+- ✅ **Completed:** [Major accomplishments]
+- 🔄 **In Progress:** [Current work]
+- 📋 **Coming Next:** [Next priorities]
+
+### Metrics Dashboard
+- **Overall Progress:** X% complete
+- **Timeline Status:** On track / X days ahead/behind
+- **Budget Status:** On budget / X% over/under
+- **Quality Score:** X/10 (based on defects, rework, satisfaction)
+
+### Issues & Risks
+- 🚨 **Critical:** [Issues needing immediate attention]
+- ⚠️ **Monitor:** [Risks to watch]
+
+### Next Period Goals
+1. [Specific goal with deadline]
+2. [Specific goal with deadline]
+```
+
+This enhanced system ensures comprehensive project tracking with industry-standard practices while maintaining clarity and context for users who need detailed explanations at every step.
